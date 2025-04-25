@@ -140,12 +140,18 @@
             padding: 20px;
             min-height: 200px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            /* CHANGED: flex-direction to row for horizontal items on mobile */
+            flex-direction: row;
+            /* CHANGED: align-items to flex-start for items at the top */
+            align-items: flex-start;
             /* Changed justify-content to flex-start to keep title at top */
             justify-content: flex-start;
             gap: 10px; /* Space between dropped items */
             transition: border-color 0.3s ease;
+            /* ADDED: Enable horizontal scrolling on mobile */
+            overflow-x: auto;
+            overflow-y: hidden; /* Hide vertical scrollbar */
+            white-space: nowrap; /* Prevent items from wrapping */
         }
 
         .drop-column.drag-over {
@@ -159,7 +165,12 @@
              overflow: hidden;
              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
              /* Added margin-bottom to space dropped items */
-             margin-bottom: 10px;
+             /* REMOVED margin-bottom as items are horizontal */
+             /* margin-bottom: 10px; */
+             /* ADDED margin-right for spacing between horizontal items */
+             margin-right: 10px;
+             /* Ensure dropped items don't shrink */
+             flex-shrink: 0;
         }
 
          .dropped-item img {
@@ -176,6 +187,10 @@
             color: #5a3e36;
             /* Ensure title doesn't shrink */
             flex-shrink: 0;
+            /* ADDED margin-right to space title from horizontal items */
+            margin-right: 20px;
+            /* Ensure title is at the beginning of the flex row */
+            align-self: flex-start;
         }
 
         .timer-score {
@@ -255,7 +270,7 @@
         }
 
 
-        /* Mobile Responsiveness */
+        /* Desktop Responsiveness */
         @media (min-width: 768px) {
             .game-area {
                 flex-direction: row; /* Arrange columns horizontally on larger screens */
@@ -265,24 +280,43 @@
                  position: static; /* Reset positioning on desktop */
                  width: 120px; /* Restore desktop width */
                  height: auto; /* Restore auto height */
-                 /* Use flex properties to center the item */
-                 display: flex;
-                 justify-content: center; /* Center horizontally */
-                 align-items: center; /* Center vertically */
-                 align-self: center; /* Center the container itself within the flex row */
+                 display: block; /* Treat as block for margin: auto centering */
+                 /* REMOVED flex properties for centering */
+                 /* justify-content: center; */
+                 /* align-items: center; */
+                 align-self: center; /* Keep align-self if needed for the parent flex row */
             }
 
             .drag-item {
                 position: static; /* Reset positioning on desktop */
                 transform: none; /* Remove transform on desktop */
-                margin: 0; /* Ensure no margin interferes */
-                /* No need for margin: auto here, container flex handles centering */
+                /* Use margin: auto for centering a block element */
+                margin: 0 auto; /* Center horizontally */
             }
 
              .drop-columns-container {
                  flex-grow: 1; /* Allow columns to take remaining space */
                  display: flex;
                  gap: 20px;
+             }
+
+             /* OVERRIDE mobile specific drop column styles on desktop */
+             .drop-column {
+                 flex-direction: column; /* Stack items vertically on desktop */
+                 align-items: center; /* Center items horizontally within column on desktop */
+                 overflow-x: hidden; /* Hide horizontal scrollbar on desktop */
+                 white-space: normal; /* Allow text/items to wrap normally on desktop */
+             }
+
+             .drop-column .column-title {
+                 margin-right: 0; /* Remove right margin on desktop */
+                 margin-bottom: 15px; /* Restore bottom margin on desktop */
+                 align-self: center; /* Center title on desktop */
+             }
+
+             .dropped-item {
+                 margin-right: 0; /* Remove right margin on desktop */
+                 margin-bottom: 10px; /* Restore bottom margin on desktop */
              }
         }
 
@@ -792,8 +826,8 @@
                  // Return element to initial position if not dropped on a valid target
                  currentPicture.style.position = 'absolute'; // Revert to absolute relative to container
                  currentPicture.style.left = '50%';
-                 currentPicture.style.top = '50%';
-                 currentPicture.style.transform = 'translate(-50%, -50%)';
+                 currentPictureElement.style.top = '50%'; // Corrected typo: currentPictureElement
+                 currentPictureElement.style.transform = 'translate(-50%, -50%)'; // Corrected typo: currentPictureElement
             }
 
              // Clean up touch variables
@@ -848,7 +882,15 @@
              }
 
              // Append the dropped item to the column
-             dropTarget.appendChild(droppedItem);
+             // Check if it's a mobile view to prepend
+             if (window.innerWidth < 768) { // Assuming 768px is the mobile breakpoint
+                 // Prepend for horizontal layout on mobile
+                 dropTarget.prepend(droppedItem);
+             } else {
+                 // Append for vertical layout on desktop
+                 dropTarget.appendChild(droppedItem);
+             }
+
 
              // Check if the drop is correct
              if (draggedOwner === targetOwner) {
