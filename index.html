@@ -17,6 +17,11 @@
             min-height: 100vh;
             color: #333;
             box-sizing: border-box; /* Include padding in element's total width and height */
+            /* Prevent selection which can interfere with touch */
+            user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            touch-action: none; /* Prevent default touch actions like scrolling/zooming */
         }
 
         .container {
@@ -75,11 +80,22 @@
             margin-top: 20px;
         }
 
+        .drag-item-container {
+             /* Added relative positioning to allow absolute positioning of drag item */
+            position: relative;
+            width: 100%; /* Take full width on mobile */
+             height: 120px; /* Give it some height */
+             display: flex;
+             justify-content: center;
+             align-items: center;
+        }
+
+
         .drag-item {
             width: 100px; /* Fixed size for the draggable image */
             height: 100px;
             background-color: #eee; /* Placeholder background */
-            margin: 0 auto 20px auto; /* Center the draggable item */
+            margin: 0 auto; /* Center the draggable item initially */
             border-radius: 10px;
             cursor: grab;
             display: flex;
@@ -91,7 +107,21 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             /* Ensure it's initially not draggable until image loads */
             draggable: false;
+
+            /* Added positioning for touch dragging */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out; /* Smooth movement */
         }
+
+         .drag-item.dragging {
+             z-index: 10; /* Bring to front while dragging */
+             cursor: grabbing;
+             transition: none; /* No smooth transition while actively dragging */
+         }
+
 
         .drag-item img {
             width: 100%;
@@ -229,22 +259,18 @@
                 flex-direction: row; /* Arrange columns horizontally on larger screens */
             }
 
-            .drag-item {
-                margin: 0; /* Remove auto margin on larger screens */
-            }
-
-            .game-content {
-                 display: flex;
-                 gap: 20px;
-                 width: 100%;
-            }
-
             .drag-item-container {
-                flex-basis: 120px; /* Fixed width for the drag item container */
-                flex-shrink: 0; /* Prevent shrinking */
-                display: flex;
-                justify-content: center;
-                align-items: flex-start; /* Align to top */
+                 position: static; /* Reset positioning on desktop */
+                 width: 120px; /* Restore desktop width */
+                 height: auto; /* Restore auto height */
+                 justify-content: center;
+                 align-items: flex-start;
+            }
+
+            .drag-item {
+                position: static; /* Reset positioning on desktop */
+                transform: none; /* Remove transform on desktop */
+                margin: 0 auto 20px auto; /* Restore desktop margin */
             }
 
              .drop-columns-container {
@@ -287,6 +313,7 @@
             <button onclick="hideMessageBox()">OK</button>
         </div>
 
+
         <div id="introPage" class="page active">
             <h1>Welcome to the Wedding Match Game!</h1>
             <p>Test your knowledge about the happy couple by matching items to who they belong to!</p>
@@ -306,7 +333,7 @@
 
         <div id="gamePage" class="page">
             <div class="timer-score">
-                Time: <span id="timerDisplay">0s</span>
+                Time: <span id="timerDisplay">0s</span> | Score: <span id="scoreDisplay">0</span>
             </div>
             <div class="game-content">
                 <div class="drag-item-container">
@@ -376,13 +403,10 @@
         }
 
         readyButton.addEventListener('click', () => showPage(startPage));
-        // Modified startButton listener to check if details are already entered
         startButton.addEventListener('click', () => {
-             // Check if name and email are already stored
             if (userName && userEmail) {
-                startGame(); // Skip the start page if details exist
+                startGame();
             } else {
-                 // Proceed to get details if not already stored
                 const enteredName = document.getElementById('userName').value.trim();
                 const enteredEmail = document.getElementById('userEmail').value.trim();
 
@@ -392,16 +416,13 @@
                 }
                 userName = enteredName;
                 userEmail = enteredEmail;
-                startGame(); // Start the game after getting details
+                startGame();
             }
         });
 
-        // Modified playAgainButton listener to directly start the game
         playAgainButton.addEventListener('click', () => {
-             // Since name and email are already stored from the first play,
-             // we can directly start the game again.
-             resetGame(); // Reset game state
-             startGame(); // Start a new game
+             resetGame();
+             startGame();
         });
 
 
@@ -414,9 +435,13 @@
         let currentPictureIndex = 0;
         let gamePictures = []; // Array to hold the 20 random pictures
 
+        // Variables for touch dragging
+        let isDragging = false;
+        let dragOffsetX, dragOffsetY;
+        let initialX, initialY;
+
+
         // --- Placeholder Picture Data ---
-        // In a real scenario, you would fetch these randomly from your GitHub folders.
-        // The 'owner' property indicates the correct column.
         const allPictures = [
             { url: 'https://placehold.co/100x100/FF5733/white?text=Groom+Item+1', owner: 'groom' },
             { url: 'https://placehold.co/100x100/33FF57/white?text=Bride+Item+1', owner: 'bride' },
@@ -492,8 +517,12 @@
             currentPictureElement.innerHTML = '';
             currentPictureElement.draggable = false; // Ensure not draggable initially
             currentPictureElement.removeAttribute('data-owner');
-            currentPictureElement.classList.remove('drag-item');
+            currentPictureElement.classList.remove('drag-item', 'dragging'); // Also remove dragging class
             currentPictureElement.style.opacity = 1; // Reset opacity
+             // Reset position for touch dragging
+            currentPictureElement.style.left = '50%';
+            currentPictureElement.style.top = '50%';
+            currentPictureElement.style.transform = 'translate(-50%, -50%)';
 
 
             if (currentPictureIndex < gamePictures.length) {
@@ -508,7 +537,7 @@
                     console.log("Image loaded:", this.src);
                     // Set attributes on the *container* element (#currentPicture)
                     currentPictureElement.setAttribute('data-owner', picture.owner);
-                    currentPictureElement.draggable = true; // Make the container draggable
+                    currentPictureElement.draggable = true; // Make the container draggable for desktop
                     currentPictureElement.classList.add('drag-item'); // Add the drag-item class
 
                     console.log("After image load, attributes set on", currentPictureElement.id, ": draggable =", currentPictureElement.draggable, "data-owner =", currentPictureElement.getAttribute('data-owner')); // Detailed log after load
@@ -521,7 +550,7 @@
                     this.src = 'https://placehold.co/100x100/cccccc/555555?text=Error'; // Placeholder on error
                      // Still try to make it draggable even if there's an error, with a placeholder owner
                     currentPictureElement.setAttribute('data-owner', picture.owner || 'unknown'); // Use original owner or 'unknown'
-                    currentPictureElement.draggable = true;
+                    currentPictureElement.draggable = true; // Make draggable for desktop
                     currentPictureElement.classList.add('drag-item');
                      console.log("After image error, attributes set on", currentPictureElement.id, ": draggable =", currentPictureElement.draggable, "data-owner =", currentPictureElement.getAttribute('data-owner')); // Detailed log after error
                 };
@@ -583,10 +612,6 @@
              // Clear any ongoing timer just in case
             clearInterval(timerInterval);
 
-            // Reset input fields on the start page (optional, can keep previous entry)
-            // document.getElementById('userName').value = '';
-            // document.getElementById('userEmail').value = '';
-
             // Reset displays on the GAME page
             document.getElementById('scoreDisplay').textContent = '0'; // Keep this to reset the internal value
             document.getElementById('timerDisplay').textContent = '0s';
@@ -608,123 +633,241 @@
             currentPictureElement.removeAttribute('data-owner'); // Use removeAttribute
             currentPictureElement.style.opacity = 1;
             currentPictureElement.draggable = false; // Make it non-draggable until a new game starts
-            currentPictureElement.classList.remove('drag-item'); // Remove drag-item class
+            currentPictureElement.classList.remove('drag-item', 'dragging'); // Also remove dragging class
+             // Reset position for touch dragging
+            currentPictureElement.style.left = '50%';
+            currentPictureElement.style.top = '50%';
+            currentPictureElement.style.transform = 'translate(-50%, -50%)';
 
-            // Award page elements are populated by endGame, no need to clear here
 
             console.log("Game reset."); // Log reset
-
-            // showPage(introPage); // Removed: Play Again goes directly to game
         }
 
 
-        // --- Drag and Drop ---
+        // --- Drag and Drop (Desktop) ---
         const currentPicture = document.getElementById('currentPicture');
         const dropColumns = document.querySelectorAll('.drop-column');
 
         currentPicture.addEventListener('dragstart', (e) => {
-             console.log("dragstart event fired on element:", e.target.id, "Current Picture Element ID:", currentPicture.id); // Log the ID of the element firing the event and the expected element ID
+             console.log("dragstart event fired on element:", e.target.id, "Current Picture Element ID:", currentPicture.id);
 
-             // Always reference the currentPicture element for checks
              const targetElement = currentPicture;
-
-             // Ensure the drag is only possible if the element is marked as draggable
-             // and has the data-owner attribute with a value
              const isDraggable = targetElement.draggable;
-             const dataOwnerValue = targetElement.getAttribute('data-owner'); // Get attribute value directly
-             const hasOwnerValue = !!dataOwnerValue; // Check if the value exists and is not empty string
+             const dataOwnerValue = targetElement.getAttribute('data-owner');
+             const hasOwnerValue = !!dataOwnerValue;
 
-             console.log(`dragstart checks for ${targetElement.id}: draggable=${isDraggable}, dataOwnerValue='${dataOwnerValue}', hasOwnerValue=${hasOwnerValue}`); // Log individual checks
+             console.log(`dragstart checks for ${targetElement.id}: draggable=${isDraggable}, dataOwnerValue='${dataOwnerValue}', hasOwnerValue=${hasOwnerValue}`);
 
 
             if (isDraggable && hasOwnerValue) {
-                // Set the data to be transferred - the correct owner
-                e.dataTransfer.setData('text/plain', dataOwnerValue); // Use the attribute value
-                // Set the drag image (optional, uses the element by default)
-                // e.dataTransfer.setDragImage(e.target, 0, 0); // Use e.target for the visual drag image
-                e.target.style.opacity = '0.5'; // Visual feedback during drag (on the actual element being dragged)
-                 console.log("Drag started successfully for owner:", dataOwnerValue); // Log drag start
+                e.dataTransfer.setData('text/plain', dataOwnerValue);
+                e.target.style.opacity = '0.5';
+                 console.log("Desktop drag started successfully for owner:", dataOwnerValue);
             } else {
-                 e.preventDefault(); // Prevent drag if not draggable or data is missing
-                 console.log("Drag prevented: Condition failed.");
+                 e.preventDefault();
+                 console.log("Desktop drag prevented: Condition failed.");
             }
         });
 
         currentPicture.addEventListener('dragend', (e) => {
-            // dragend fires after drop or drag cancellation
-            e.target.style.opacity = '1'; // Reset opacity
-             console.log("Drag ended."); // Log drag end
+            e.target.style.opacity = '1';
+             console.log("Desktop drag ended.");
         });
 
         dropColumns.forEach(column => {
             column.addEventListener('dragover', (e) => {
-                e.preventDefault(); // Prevent default to allow drop
-                column.classList.add('drag-over'); // Visual feedback
+                e.preventDefault();
+                column.classList.add('drag-over');
             });
 
             column.addEventListener('dragleave', (e) => {
-                column.classList.remove('drag-over'); // Remove visual feedback
+                column.classList.remove('drag-over');
             });
 
             column.addEventListener('drop', (e) => {
                 e.preventDefault();
-                column.classList.remove('drag-over'); // Remove visual feedback
+                column.classList.remove('drag-over');
 
-                // Get the dragged owner data FIRST
                 const draggedOwner = e.dataTransfer.getData('text/plain');
-                const targetOwner = column.dataset.owner; // Still use dataset for drop target
-                console.log("Dropped. Dragged owner:", draggedOwner, "Target owner:", targetOwner); // Log drop details
+                const targetOwner = column.dataset.owner;
+                console.log("Desktop Dropped. Dragged owner:", draggedOwner, "Target owner:", targetOwner);
 
-                // Ensure draggedOwner data was successfully transferred
                 if (!draggedOwner) {
-                    console.error("Drop failed: draggedOwner data missing.");
+                    console.error("Desktop Drop failed: draggedOwner data missing.");
                     showMessageBox("Failed to process drop. Please try again.");
-                    return; // Stop processing if data is missing
+                    return;
                 }
 
-
-                const currentPictureElement = document.getElementById('currentPicture');
-                // Ensure there's an image element before trying to get its src
-                const pictureImgElement = currentPictureElement.querySelector('img');
-                const pictureUrl = pictureImgElement ? pictureImgElement.src : ''; // Get URL or empty string
-
-                // Create a new element for the dropped item
-                const droppedItem = document.createElement('div');
-                droppedItem.classList.add('dropped-item');
-                // Append the image to the dropped item div
-                if (pictureImgElement) {
-                     const droppedImg = document.createElement('img');
-                     droppedImg.src = pictureUrl;
-                     droppedImg.alt = "Dropped Item";
-                     droppedItem.appendChild(droppedImg);
-                } else {
-                    // Handle case where image element wasn't found (shouldn't happen if loadNextPicture works)
-                    droppedItem.textContent = 'Error';
-                }
-
-
-                // Append the dropped item to the column
-                column.appendChild(droppedItem);
-
-
-                // Check if the drop is correct
-                if (draggedOwner === targetOwner) {
-                    score++;
-                    // document.getElementById('scoreDisplay').textContent = score; // Removed: Score is hidden during game
-                     console.log("Correct drop! Score:", score); // Log score update
-                } else {
-                     console.log("Incorrect drop."); // Log incorrect drop
-                }
-
-                // Increment index and load next picture
-                currentPictureIndex++;
-                console.log("Current picture index incremented to:", currentPictureIndex); // Log index increment
-
-                // Load the next picture or end the game
-                loadNextPicture();
+                handleDrop(currentPicture, column, draggedOwner, targetOwner);
 
             });
         });
+
+
+        // --- Touch Drag and Drop (Mobile) ---
+
+        currentPicture.addEventListener('touchstart', (e) => {
+            console.log("touchstart event fired.");
+            // Prevent default touch actions like scrolling
+            e.preventDefault();
+
+            // Ensure the element is ready to be dragged
+            if (currentPicture.draggable && currentPicture.hasAttribute('data-owner')) {
+                isDragging = true;
+                currentPicture.classList.add('dragging');
+                currentPicture.style.opacity = '0.5';
+
+                const touch = e.touches[0];
+                const rect = currentPicture.getBoundingClientRect();
+
+                // Calculate offset relative to the element's top-left corner
+                dragOffsetX = touch.clientX - rect.left;
+                dragOffsetY = touch.clientY - rect.top;
+
+                 // Store initial position for potential reset
+                 initialX = rect.left;
+                 initialY = rect.top;
+
+                console.log("Touch drag started.");
+            } else {
+                 console.log("Touch drag prevented: Element not draggable or data-owner missing.");
+            }
+        });
+
+        currentPicture.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+
+            console.log("touchmove event fired.");
+            e.preventDefault(); // Prevent scrolling while dragging
+
+            const touch = e.touches[0];
+
+            // Calculate new position based on touch and offset
+            const newX = touch.clientX - dragOffsetX;
+            const newY = touch.clientY - dragOffsetY;
+
+            // Update element's position using absolute positioning
+            currentPicture.style.position = 'fixed'; // Use fixed to position relative to viewport
+            currentPicture.style.left = `${newX}px`;
+            currentPicture.style.top = `${newY}px`;
+             currentPicture.style.transform = 'none'; // Remove transform when using left/top
+
+            // Check for potential drop targets while dragging
+            highlightDropTarget(touch.clientX, touch.clientY);
+        });
+
+        currentPicture.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+
+            console.log("touchend event fired.");
+            isDragging = false;
+            currentPicture.classList.remove('dragging');
+            currentPicture.style.opacity = '1';
+
+            const touch = e.changedTouches[0]; // Use changedTouches for touchend
+
+            // Determine the drop target at the end of the touch
+            const dropTarget = getDropTarget(touch.clientX, touch.clientY);
+
+            // Remove highlight from all drop targets
+            dropColumns.forEach(column => column.classList.remove('drag-over'));
+
+
+            if (dropTarget) {
+                console.log("Touch dropped on a target.");
+                const draggedOwner = currentPicture.getAttribute('data-owner'); // Get owner from the element
+                const targetOwner = dropTarget.dataset.owner;
+
+                handleDrop(currentPicture, dropTarget, draggedOwner, targetOwner);
+
+                 // Reset position is handled within handleDrop or loadNextPicture
+            } else {
+                 console.log("Touch dropped outside a target. Returning to initial position.");
+                 // Return element to initial position if not dropped on a valid target
+                 currentPicture.style.position = 'absolute'; // Revert to absolute relative to container
+                 currentPicture.style.left = '50%';
+                 currentPicture.style.top = '50%';
+                 currentPicture.style.transform = 'translate(-50%, -50%)';
+            }
+
+             // Clean up touch variables
+             dragOffsetX = 0;
+             dragOffsetY = 0;
+             initialX = 0;
+             initialY = 0;
+        });
+
+        // Helper function to find the drop target under the touch point
+        function getDropTarget(x, y) {
+            let target = null;
+            // Hide the dragged item temporarily to find the element underneath
+            currentPicture.style.visibility = 'hidden';
+            const elementUnderTouch = document.elementFromPoint(x, y);
+            currentPicture.style.visibility = 'visible'; // Show it again
+
+            // Check if the element under the touch is a drop column or inside one
+            if (elementUnderTouch) {
+                target = elementUnderTouch.closest('.drop-column');
+            }
+            return target;
+        }
+
+        // Helper function to highlight the drop target during touch move
+        function highlightDropTarget(x, y) {
+             // Remove highlight from all columns first
+            dropColumns.forEach(column => column.classList.remove('drag-over'));
+
+            const dropTarget = getDropTarget(x, y);
+            if (dropTarget) {
+                dropTarget.classList.add('drag-over');
+            }
+        }
+
+
+        // --- Common Drop Handling Logic ---
+        function handleDrop(draggedElement, dropTarget, draggedOwner, targetOwner) {
+             const pictureImgElement = draggedElement.querySelector('img');
+             const pictureUrl = pictureImgElement ? pictureImgElement.src : '';
+
+             // Create a new element for the dropped item
+             const droppedItem = document.createElement('div');
+             droppedItem.classList.add('dropped-item');
+             if (pictureImgElement) {
+                  const droppedImg = document.createElement('img');
+                  droppedImg.src = pictureUrl;
+                  droppedImg.alt = "Dropped Item";
+                  droppedItem.appendChild(droppedImg);
+             } else {
+                 droppedItem.textContent = 'Error';
+             }
+
+             // Append the dropped item to the column
+             dropTarget.appendChild(droppedItem);
+
+             // Check if the drop is correct
+             if (draggedOwner === targetOwner) {
+                 score++;
+                 console.log("Correct drop! Score:", score);
+             } else {
+                  console.log("Incorrect drop.");
+             }
+
+             // Increment index and load next picture
+             currentPictureIndex++;
+             console.log("Current picture index incremented to:", currentPictureIndex);
+
+             // Load the next picture or end the game
+             loadNextPicture();
+
+             // Remove the original dragged element from the DOM after it's dropped
+             // This is important for both desktop and touch drags
+             if (draggedElement.parentNode) {
+                 draggedElement.parentNode.removeChild(draggedElement);
+             }
+
+             // Recreate the draggable element for the next picture in loadNextPicture
+        }
+
 
         // --- EmailJS Integration ---
         function sendEmail(name, email, finalScore, finalTime) {
