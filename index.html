@@ -95,7 +95,6 @@
             width: 100px; /* Fixed size for the draggable image */
             height: 100px;
             background-color: #eee; /* Placeholder background */
-            margin: 0 auto; /* Center the draggable item initially */
             border-radius: 10px;
             cursor: grab;
             display: flex;
@@ -266,14 +265,18 @@
                  position: static; /* Reset positioning on desktop */
                  width: 120px; /* Restore desktop width */
                  height: auto; /* Restore auto height */
-                 justify-content: center;
-                 align-items: flex-start;
+                 /* Use flex properties to center the item */
+                 display: flex;
+                 justify-content: center; /* Center horizontally */
+                 align-items: center; /* Center vertically */
+                 align-self: center; /* Center the container itself within the flex row */
             }
 
             .drag-item {
                 position: static; /* Reset positioning on desktop */
                 transform: none; /* Remove transform on desktop */
-                margin: 0 auto 20px auto; /* Restore desktop margin */
+                margin: 0; /* Ensure no margin interferes */
+                /* No need for margin: auto here, container flex handles centering */
             }
 
              .drop-columns-container {
@@ -862,14 +865,8 @@
              // Load the next picture or end the game
              loadNextPicture();
 
-             // Remove the original dragged element from the DOM after it's dropped
-             // This is important for both desktop and touch drags
-             // Check if the element still has a parent before trying to remove
-             if (draggedElement && draggedElement.parentNode) {
-                 draggedElement.parentNode.removeChild(draggedElement);
-             }
-
-             // Recreate the draggable element for the next picture in loadNextPicture
+             // --- REMOVED: Removing the draggedElement from the DOM ---
+             // The next picture will be loaded into the *same* currentPictureElement
         }
 
 
