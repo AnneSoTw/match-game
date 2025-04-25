@@ -21,7 +21,7 @@
             user-select: none;
             -webkit-user-select: none;
             -ms-user-select: none;
-            touch-action: none; /* Prevent default touch actions like scrolling/zooming */
+            /* REMOVED: touch-action: none; from body */
         }
 
         .container {
@@ -114,6 +114,9 @@
             left: 50%;
             transform: translate(-50%, -50%);
             transition: transform 0.1s ease-out; /* Smooth movement */
+
+            /* ADDED: touch-action: none; to the draggable item */
+            touch-action: none;
         }
 
          .drag-item.dragging {
@@ -861,7 +864,8 @@
 
              // Remove the original dragged element from the DOM after it's dropped
              // This is important for both desktop and touch drags
-             if (draggedElement.parentNode) {
+             // Check if the element still has a parent before trying to remove
+             if (draggedElement && draggedElement.parentNode) {
                  draggedElement.parentNode.removeChild(draggedElement);
              }
 
