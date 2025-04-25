@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Matchmaking Game</title>
+    <title>Wedding Matchmaking Game 1</title>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -140,19 +140,27 @@
             padding: 20px;
             min-height: 200px;
             display: flex;
-            /* CHANGED: flex-direction to row for horizontal items on mobile */
-            flex-direction: row;
-            /* CHANGED: align-items to flex-start for items at the top */
-            align-items: flex-start;
-            /* Changed justify-content to flex-start to keep title at top */
-            justify-content: flex-start;
-            gap: 10px; /* Space between dropped items */
+            /* CHANGED: flex-direction to column for title and item container */
+            flex-direction: column;
+            align-items: center; /* Center column content horizontally */
+            justify-content: flex-start; /* Align column content to the top */
+            gap: 10px; /* Space between title and item container */
             transition: border-color 0.3s ease;
-            /* ADDED: Enable horizontal scrolling on mobile */
-            overflow-x: auto;
+        }
+
+        /* New container for dropped items on mobile */
+        .dropped-items-container {
+            display: flex;
+            flex-direction: row; /* Arrange items horizontally */
+            gap: 10px; /* Space between dropped items */
+            overflow-x: auto; /* Enable horizontal scrolling */
             overflow-y: hidden; /* Hide vertical scrollbar */
             white-space: nowrap; /* Prevent items from wrapping */
+            width: 100%; /* Take full width of the column */
+            /* Ensure items align to the top within this container */
+            align-items: flex-start;
         }
+
 
         .drop-column.drag-over {
             border-color: #7d5a50; /* Highlight when dragging over */
@@ -164,11 +172,9 @@
              border-radius: 8px;
              overflow: hidden;
              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-             /* Added margin-bottom to space dropped items */
-             /* REMOVED margin-bottom as items are horizontal */
-             /* margin-bottom: 10px; */
+             /* REMOVED margin-bottom */
              /* ADDED margin-right for spacing between horizontal items */
-             margin-right: 10px;
+             /* margin-right: 10px; */ /* Gap on container handles spacing now */
              /* Ensure dropped items don't shrink */
              flex-shrink: 0;
         }
@@ -187,10 +193,10 @@
             color: #5a3e36;
             /* Ensure title doesn't shrink */
             flex-shrink: 0;
-            /* ADDED margin-right to space title from horizontal items */
-            margin-right: 20px;
-            /* Ensure title is at the beginning of the flex row */
-            align-self: flex-start;
+            /* REMOVED margin-right */
+            /* margin-right: 20px; */
+            /* Ensure title is centered horizontally within the column */
+            align-self: center;
         }
 
         .timer-score {
@@ -280,18 +286,18 @@
                  position: static; /* Reset positioning on desktop */
                  width: 120px; /* Restore desktop width */
                  height: auto; /* Restore auto height */
-                 display: block; /* Treat as block for margin: auto centering */
-                 /* REMOVED flex properties for centering */
-                 /* justify-content: center; */
-                 /* align-items: center; */
-                 align-self: center; /* Keep align-self if needed for the parent flex row */
+                 /* Use flex properties to center the item */
+                 display: flex; /* Use flexbox */
+                 justify-content: center; /* Center horizontally */
+                 align-items: center; /* Center vertically */
+                 align-self: center; /* Center the container itself within the parent flex row */
             }
 
             .drag-item {
                 position: static; /* Reset positioning on desktop */
                 transform: none; /* Remove transform on desktop */
-                /* Use margin: auto for centering a block element */
-                margin: 0 auto; /* Center horizontally */
+                margin: 0; /* Ensure no margin interferes */
+                /* Let the container's flex properties handle centering */
             }
 
              .drop-columns-container {
@@ -305,6 +311,7 @@
                  flex-direction: column; /* Stack items vertically on desktop */
                  align-items: center; /* Center items horizontally within column on desktop */
                  overflow-x: hidden; /* Hide horizontal scrollbar on desktop */
+                 overflow-y: auto; /* Enable vertical scrolling on desktop if needed */
                  white-space: normal; /* Allow text/items to wrap normally on desktop */
              }
 
@@ -312,6 +319,17 @@
                  margin-right: 0; /* Remove right margin on desktop */
                  margin-bottom: 15px; /* Restore bottom margin on desktop */
                  align-self: center; /* Center title on desktop */
+             }
+
+             /* Override mobile horizontal item container on desktop */
+             .dropped-items-container {
+                 flex-direction: column; /* Stack items vertically on desktop */
+                 gap: 10px; /* Restore vertical gap */
+                 overflow-x: hidden; /* Hide horizontal scrollbar */
+                 overflow-y: auto; /* Enable vertical scrolling if needed */
+                 white-space: normal; /* Allow items to wrap */
+                 width: auto; /* Auto width on desktop */
+                 align-items: center; /* Center items horizontally within container on desktop */
              }
 
              .dropped-item {
@@ -384,10 +402,14 @@
                 <div class="drop-columns-container game-area">
                     <div id="groomColumn" class="drop-column" data-owner="groom">
                         <div class="column-title">Groom</div>
-                        </div>
+                        <div class="dropped-items-container">
+                            </div>
+                    </div>
                     <div id="brideColumn" class="drop-column" data-owner="bride">
                          <div class="column-title">Bride</div>
-                        </div>
+                         <div class="dropped-items-container">
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -826,8 +848,8 @@
                  // Return element to initial position if not dropped on a valid target
                  currentPicture.style.position = 'absolute'; // Revert to absolute relative to container
                  currentPicture.style.left = '50%';
-                 currentPictureElement.style.top = '50%'; // Corrected typo: currentPictureElement
-                 currentPictureElement.style.transform = 'translate(-50%, -50%)'; // Corrected typo: currentPictureElement
+                 currentPictureElement.style.top = '50%';
+                 currentPictureElement.style.transform = 'translate(-50%, -50%)';
             }
 
              // Clean up touch variables
@@ -881,14 +903,27 @@
                  droppedItem.textContent = 'Error';
              }
 
-             // Append the dropped item to the column
+             // Get the container for dropped items within the drop target
+             const droppedItemsContainer = dropTarget.querySelector('.dropped-items-container');
+
+             // Append the dropped item to the correct container
              // Check if it's a mobile view to prepend
              if (window.innerWidth < 768) { // Assuming 768px is the mobile breakpoint
                  // Prepend for horizontal layout on mobile
-                 dropTarget.prepend(droppedItem);
+                 if (droppedItemsContainer) {
+                     droppedItemsContainer.prepend(droppedItem);
+                 } else {
+                      // Fallback if container not found (shouldn't happen with correct HTML)
+                      dropTarget.appendChild(droppedItem);
+                 }
              } else {
                  // Append for vertical layout on desktop
-                 dropTarget.appendChild(droppedItem);
+                 if (droppedItemsContainer) {
+                     droppedItemsContainer.appendChild(droppedItem);
+                 } else {
+                     // Fallback if container not found
+                     dropTarget.appendChild(droppedItem);
+                 }
              }
 
 
