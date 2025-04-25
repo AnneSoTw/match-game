@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Matchmaking Game 1</title>
+    <title>Wedding Matchmaking Game</title>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -87,7 +87,8 @@
              height: 120px; /* Give it some height */
              display: flex;
              justify-content: center;
-             align-items: center;
+             /* CHANGED: align-items to flex-start for mobile positioning */
+             align-items: flex-start; /* Align to top on mobile */
         }
 
 
@@ -107,11 +108,11 @@
             /* Ensure it's initially not draggable until image loads */
             draggable: false;
 
-            /* Added positioning for touch dragging */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            /* REMOVED: absolute positioning for mobile */
+            /* position: absolute; */
+            /* top: 50%; */
+            /* left: 50%; */
+            /* transform: translate(-50%, -50%); */
             transition: transform 0.1s ease-out; /* Smooth movement */
 
             /* ADDED: touch-action: none; to the draggable item */
@@ -140,8 +141,7 @@
             padding: 20px;
             min-height: 200px;
             display: flex;
-            /* CHANGED: flex-direction to column for title and item container */
-            flex-direction: column;
+            flex-direction: column; /* Stack title and item container vertically */
             align-items: center; /* Center column content horizontally */
             justify-content: flex-start; /* Align column content to the top */
             gap: 10px; /* Space between title and item container */
@@ -159,6 +159,7 @@
             width: 100%; /* Take full width of the column */
             /* Ensure items align to the top within this container */
             align-items: flex-start;
+            padding-bottom: 10px; /* Add some padding for scrollbar */
         }
 
 
@@ -172,9 +173,6 @@
              border-radius: 8px;
              overflow: hidden;
              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-             /* REMOVED margin-bottom */
-             /* ADDED margin-right for spacing between horizontal items */
-             /* margin-right: 10px; */ /* Gap on container handles spacing now */
              /* Ensure dropped items don't shrink */
              flex-shrink: 0;
         }
@@ -193,8 +191,6 @@
             color: #5a3e36;
             /* Ensure title doesn't shrink */
             flex-shrink: 0;
-            /* REMOVED margin-right */
-            /* margin-right: 20px; */
             /* Ensure title is centered horizontally within the column */
             align-self: center;
         }
@@ -224,9 +220,13 @@
             margin: 10px 0;
         }
 
+        .social-share {
+             margin-top: 20px; /* Add space above buttons */
+        }
+
         .social-share button {
-            margin: 10px;
-            background-color: #5a3e36;
+            margin: 0 10px; /* Add horizontal margin between buttons */
+            background-color: #5a3e50; /* Darker brown */
         }
 
         /* New Award Certificate Styles */
@@ -238,6 +238,7 @@
             background-color: #fff;
             position: relative;
             overflow: hidden;
+            text-align: center; /* Center text inside certificate */
         }
 
         .award-title {
@@ -265,11 +266,16 @@
             /* Add a simple graphic or text later if desired */
         }
 
+        /* Moved Save the Date text outside the certificate */
         .save-the-date-text {
             font-size: 0.9em;
-            color: #5a3e36;
-            margin-top: 20px;
+            color: #5a3e50; /* Darker brown */
+            margin-top: 20px; /* Add space above */
+            margin-bottom: 20px; /* Add space below */
+            text-align: center; /* Center the text */
+            display: block; /* Ensure it's a block element for margin */
         }
+
 
         .score-time-text {
             color: #7d5a50;
@@ -330,6 +336,7 @@
                  white-space: normal; /* Allow items to wrap */
                  width: auto; /* Auto width on desktop */
                  align-items: center; /* Center items horizontally within container on desktop */
+                 padding-bottom: 0; /* Remove mobile padding */
              }
 
              .dropped-item {
@@ -373,7 +380,7 @@
 
 
         <div id="introPage" class="page active">
-            <h1>Welcome to the Wedding Match Game!</h1>
+            <h1>Welcome to the Wedding Match Game! 1</h1>
             <p>Test your knowledge about the happy couple by matching items to who they belong to!</p>
 
             <h2>欢迎来到婚礼配对游戏！</h2>
@@ -426,8 +433,8 @@
                     with a score of <strong id="award-score" class="score-time-text"></strong> and a time of <strong id="award-time" class="score-time-text"></strong> seconds.
                 </div>
                 <div class="award-seal"></div>
-                <p class="save-the-date-text">MAS - Save the date 2222/02/02</p>
             </div>
+            <p class="save-the-date-text">MAS - Save the date 2222/02/02</p>
             <div class="social-share">
                 <button id="playAgainButton">Play Again</button>
                 <button id="shareButton">Share Your Award (Placeholder)</button>
@@ -541,7 +548,7 @@
             currentPictureIndex = 0;
             // document.getElementById('scoreDisplay').textContent = score; // Score is hidden during game
             document.getElementById('timerDisplay').textContent = '0s';
-            // Clear dropped items while keeping the title div
+            // Clear dropped items from columns without removing titles
             document.getElementById('groomColumn').querySelectorAll('.dropped-item').forEach(item => item.remove());
             document.getElementById('brideColumn').querySelectorAll('.dropped-item').forEach(item => item.remove());
 
@@ -581,10 +588,11 @@
             currentPictureElement.removeAttribute('data-owner');
             currentPictureElement.classList.remove('drag-item', 'dragging'); // Also remove dragging class
             currentPictureElement.style.opacity = 1; // Reset opacity
-             // Reset position for touch dragging
-            currentPictureElement.style.left = '50%';
-            currentPictureElement.style.top = '50%';
-            currentPictureElement.style.transform = 'translate(-50%, -50%)';
+             // Reset position for mobile (flex positioning)
+            currentPictureElement.style.position = 'static';
+            currentPictureElement.style.left = 'auto';
+            currentPictureElement.style.top = 'auto';
+            currentPictureElement.style.transform = 'none';
 
 
             if (currentPictureIndex < gamePictures.length) {
@@ -696,10 +704,11 @@
             currentPictureElement.style.opacity = 1;
             currentPictureElement.draggable = false; // Make it non-draggable until a new game starts
             currentPictureElement.classList.remove('drag-item', 'dragging'); // Also remove dragging class
-             // Reset position for touch dragging
-            currentPictureElement.style.left = '50%';
-            currentPictureElement.style.top = '50%';
-            currentPictureElement.style.transform = 'translate(-50%, -50%)';
+             // Reset position for mobile (flex positioning)
+            currentPictureElement.style.position = 'static';
+            currentPictureElement.style.left = 'auto';
+            currentPictureElement.style.top = 'auto';
+            currentPictureElement.style.transform = 'none';
 
 
             console.log("Game reset."); // Log reset
@@ -786,9 +795,10 @@
                 dragOffsetX = touch.clientX - rect.left;
                 dragOffsetY = touch.clientY - rect.top;
 
-                 // Store initial position for potential reset
+                 // Store initial position for potential reset (relative to viewport)
                  initialX = rect.left;
                  initialY = rect.top;
+
 
                 console.log("Touch drag started.");
             } else {
@@ -808,11 +818,12 @@
             const newX = touch.clientX - dragOffsetX;
             const newY = touch.clientY - dragOffsetY;
 
-            // Update element's position using absolute positioning
-            currentPicture.style.position = 'fixed'; // Use fixed to position relative to viewport
+            // Update element's position using absolute positioning relative to viewport
+            currentPicture.style.position = 'fixed';
             currentPicture.style.left = `${newX}px`;
             currentPicture.style.top = `${newY}px`;
-             currentPicture.style.transform = 'none'; // Remove transform when using left/top
+            currentPicture.style.transform = 'none'; /* Remove transform when using left/top */
+
 
             // Check for potential drop targets while dragging
             highlightDropTarget(touch.clientX, touch.clientY);
@@ -842,14 +853,24 @@
 
                 handleDrop(currentPicture, dropTarget, draggedOwner, targetOwner);
 
-                 // Reset position is handled within handleDrop or loadNextPicture
+                 // Position will be reset by loadNextPicture or resetGame
             } else {
                  console.log("Touch dropped outside a target. Returning to initial position.");
-                 // Return element to initial position if not dropped on a valid target
-                 currentPicture.style.position = 'absolute'; // Revert to absolute relative to container
-                 currentPicture.style.left = '50%';
-                 currentPictureElement.style.top = '50%';
-                 currentPictureElement.style.transform = 'translate(-50%, -50%)';
+                 // Return element to its initial position using the stored coordinates
+                 currentPicture.style.position = 'fixed'; /* Keep fixed while moving back */
+                 currentPicture.style.left = `${initialX}px`;
+                 currentPicture.style.top = `${initialY}px`;
+                 currentPicture.style.transform = 'none';
+
+                 // Use a transition to animate it back, then reset to static
+                 currentPicture.style.transition = 'left 0.3s ease-out, top 0.3s ease-out';
+                 currentPicture.addEventListener('transitionend', function handler() {
+                      currentPicture.style.transition = 'none';
+                      currentPicture.style.position = 'static'; /* Reset to static after transition */
+                      currentPicture.style.left = 'auto';
+                      currentPicture.style.top = 'auto';
+                      currentPicture.removeEventListener('transitionend', handler);
+                 });
             }
 
              // Clean up touch variables
@@ -869,6 +890,7 @@
 
             // Check if the element under the touch is a drop column or inside one
             if (elementUnderTouch) {
+                // Find the closest drop column ancestor
                 target = elementUnderTouch.closest('.drop-column');
             }
             return target;
@@ -914,7 +936,7 @@
                      droppedItemsContainer.prepend(droppedItem);
                  } else {
                       // Fallback if container not found (shouldn't happen with correct HTML)
-                      dropTarget.appendChild(droppedItem);
+                      dropTarget.appendChild(droppedItem); // This might put it in the wrong place without the container
                  }
              } else {
                  // Append for vertical layout on desktop
@@ -922,7 +944,7 @@
                      droppedItemsContainer.appendChild(droppedItem);
                  } else {
                      // Fallback if container not found
-                     dropTarget.appendChild(droppedItem);
+                     dropTarget.appendChild(droppedItem); // This might put it in the wrong place without the container
                  }
              }
 
