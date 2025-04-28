@@ -146,6 +146,7 @@
              cursor: grabbing;
              opacity: 0.7; /* Make slightly transparent */
              transition: none; /* No transition while dragging */
+             /* ** REMOVED fixed left/top setting here - set dynamically in JS ** */
          }
 
         .drag-item img {
@@ -175,6 +176,8 @@
             justify-content: flex-start;
             gap: 10px;
             transition: border-color 0.3s ease, background-color 0.3s ease;
+            /* ** ADDED: Prevent column itself from growing too tall ** */
+            max-height: 40vh; /* Limit column height, adjust as needed */
         }
 
         .drop-column.drag-over {
@@ -200,6 +203,10 @@
             width: 100%;
             align-items: flex-start;
             min-height: 80px; /* Ensure container has some height */
+            /* ** ADDED: Enable vertical scrolling ** */
+            overflow-y: auto;
+            max-height: calc(40vh - 60px); /* Example: Limit height relative to column, adjust */
+            padding-bottom: 5px; /* Space for scrollbar */
         }
 
         .dropped-item {
@@ -263,10 +270,12 @@
              }
              .drop-column {
                  min-height: 300px; /* Taller columns on desktop */
+                 max-height: 60vh; /* Allow more height on desktop */
                  padding: 20px;
              }
              .dropped-items-container {
                  justify-content: flex-start; /* Align items to start */
+                 max-height: calc(60vh - 70px); /* Adjust max-height */
                  min-height: 100px;
              }
              .dropped-item {
@@ -494,21 +503,24 @@
         let gamePictures = []; // Holds the pictures for the current game round
         let isDragging = false;
         let dragOffsetX, dragOffsetY;
-        let initialX, initialY; // Store initial position for touch drag reset
+        // No need for initialX/Y if we reset position to relative on touchend
 
         // --- Functions ---
 
         // Simplified showPage function using only the hidden class
-        function showPage(pageToShow) {
-            // Hide all pages first
+        function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.add('hidden');
-                page.classList.remove('active'); // Also remove active just in case
+                page.classList.remove('active');
             });
-            // Show the target page
-            pageToShow.classList.remove('hidden');
-             pageToShow.classList.add('active'); // Add active for potential styling
-            console.log("Showing page:", pageToShow.id); // Log which page is shown
+            const pageToShow = document.getElementById(pageId);
+            if (pageToShow) {
+                pageToShow.classList.remove('hidden');
+                pageToShow.classList.add('active');
+                console.log("Showing page:", pageId);
+            } else {
+                console.error("Page not found:", pageId);
+            }
         }
 
 
@@ -522,14 +534,13 @@
 
         function selectRandomPictures(arr, num) {
             const shuffled = shuffle([...arr]);
-            // Ensure we don't try to select more pictures than available
             const count = Math.min(num, shuffled.length);
             return shuffled.slice(0, count);
         }
 
 
         function startTimer() {
-            stopTimer(); // Clear existing timer
+            stopTimer();
             startTime = Date.now();
             secondsElapsed = 0;
             timerDisplay.innerHTML = `<span class="lang-zh">時間:</span><span class="lang-en">Time:</span> ${secondsElapsed}s`;
@@ -548,7 +559,7 @@
 
         function updateItemsLeft() {
             const itemsRemaining = gamePictures.length - currentPictureIndex;
-            itemsLeftCounter.innerHTML = `<span class="lang-zh">剩餘物品:</span><span class="lang-en">Items Left:</span> ${itemsRemaining}`;
+            itemsLeftCounter.innerHTML = `<span class="lang-zh">剩餘物品:</span><span class="lang-en">Items Left:</span> ${itemsRemaining >= 0 ? itemsRemaining : 0}`;
         }
 
         function loadNextPicture() {
@@ -556,9 +567,9 @@
             currentPictureElement.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingText.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingText.en}</span>`;
             currentPictureElement.draggable = false;
             currentPictureElement.removeAttribute('data-owner');
-            currentPictureElement.classList.remove('dragging');
+            currentPictureElement.classList.remove('dragging'); // Ensure dragging class is removed
             currentPictureElement.style.opacity = 1;
-            currentPictureElement.style.position = 'relative'; // Reset position
+            currentPictureElement.style.position = 'relative'; // Reset position to relative
             currentPictureElement.style.left = 'auto';
             currentPictureElement.style.top = 'auto';
             currentPictureElement.style.transform = 'none';
@@ -587,6 +598,7 @@
             } else {
                 // Game over
                 console.log("All pictures processed. Ending game.");
+                updateItemsLeft(); // Show 0 items left
                 endGame();
             }
         }
@@ -661,7 +673,7 @@
             awardLogo.src = logoImage; // Use the defined logo image
 
             // Show results page
-            showPage(resultsScreen);
+            showPage('results-screen'); // Use ID directly
             replayButton.classList.remove('hidden'); // Show replay button
 
             // Send email
@@ -772,16 +784,18 @@
             if (targetElement.draggable && targetElement.hasAttribute('data-owner')) {
                 e.preventDefault();
                 isDragging = true;
-                targetElement.classList.add('dragging');
+                targetElement.classList.add('dragging'); // Applies fixed position, z-index, opacity
 
                 const touch = e.touches[0];
-                const rect = targetElement.getBoundingClientRect();
+                const rect = targetElement.getBoundingClientRect(); // Get initial position relative to viewport
+
+                // Calculate offset from the touch point to the element's top-left corner
                 dragOffsetX = touch.clientX - rect.left;
                 dragOffsetY = touch.clientY - rect.top;
 
-                // Set initial fixed position
-                targetElement.style.left = `${touch.clientX - dragOffsetX}px`;
-                targetElement.style.top = `${touch.clientY - dragOffsetY}px`;
+                // **Set initial fixed position correctly**
+                targetElement.style.left = `${rect.left}px`;
+                targetElement.style.top = `${rect.top}px`;
 
                 console.log("Touch drag started.");
             } else {
@@ -794,6 +808,7 @@
             e.preventDefault();
 
             const touch = e.touches[0];
+            // **Update fixed position based on finger movement and initial offset**
             currentPictureElement.style.left = `${touch.clientX - dragOffsetX}px`;
             currentPictureElement.style.top = `${touch.clientY - dragOffsetY}px`;
 
@@ -805,7 +820,13 @@
             e.preventDefault();
 
             isDragging = false;
+            // Remove dragging class to remove fixed positioning and opacity
             currentPictureElement.classList.remove('dragging');
+            // Reset inline styles set during drag
+            currentPictureElement.style.left = 'auto';
+            currentPictureElement.style.top = 'auto';
+            currentPictureElement.style.opacity = '1'; // Ensure opacity is reset
+
 
             const touch = e.changedTouches[0];
             const dropTarget = getDropTarget(touch.clientX, touch.clientY);
@@ -816,23 +837,27 @@
                 const draggedOwner = currentPictureElement.getAttribute('data-owner');
                 const targetOwner = dropTarget.dataset.owner;
                 console.log(`Touch drop detected on ${targetOwner} column.`);
+                // Position is reset in handleDrop -> loadNextPicture
                 handleDrop(currentPictureElement, dropTarget, draggedOwner, targetOwner);
             } else {
                 console.log("Touch ended outside target.");
-                 currentPictureElement.style.opacity = '1'; // Reset opacity
-                 // Reset position back to relative within its container
-                 currentPictureElement.style.position = 'relative';
-                 currentPictureElement.style.left = 'auto';
-                 currentPictureElement.style.top = 'auto';
+                // No need to animate back, loadNextPicture will reset the original element
+                 currentPictureElement.style.position = 'relative'; // Ensure it's back to relative
             }
         });
 
         function getDropTarget(x, y) {
             let target = null;
             const originalVisibility = currentPictureElement.style.visibility;
-            currentPictureElement.style.visibility = 'hidden';
+            // Temporarily hide the element being dragged IF it's currently fixed positioned
+            if (currentPictureElement.classList.contains('dragging')) {
+                currentPictureElement.style.visibility = 'hidden';
+            }
             const elementUnderTouch = document.elementFromPoint(x, y);
-            currentPictureElement.style.visibility = originalVisibility;
+             // Restore visibility
+            if (currentPictureElement.classList.contains('dragging')) {
+                currentPictureElement.style.visibility = 'visible';
+            }
 
             if (elementUnderTouch) {
                 target = elementUnderTouch.closest('.drop-column');
@@ -874,7 +899,7 @@
             console.log(`Selected ${gamePictures.length} pictures for this round.`);
 
             // Show game screen and hide others
-            showPage(gameScreen); // Use showPage to handle visibility
+            showPage('game-screen'); // Use ID directly
             replayButton.classList.add('hidden'); // Hide replay button
 
             // Start game logic
@@ -936,18 +961,18 @@
                  setupAndStartGame(); // Reuse stored details
              } else {
                  console.log("User details missing, going back to start screen.");
-                 showPage(startScreen); // Fallback if details are missing
+                 showPage('start-screen'); // Fallback if details are missing
              }
         }
 
 
         // --- Event Listeners ---
-        continueButton.addEventListener('click', () => showPage(startScreen));
+        continueButton.addEventListener('click', () => showPage('start-screen')); // Use ID
         startGameButton.addEventListener('click', validateAndInitGame);
         replayButton.addEventListener('click', replayGame);
 
         // --- Initial Display ---
-        showPage(welcomeScreen); // Start with the welcome page
+        showPage('welcome-screen'); // Start with the welcome page
 
         // Initialize EmailJS (Important: Do this once on load)
         if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
@@ -957,12 +982,11 @@
             } catch(e) {
                 console.error("EmailJS Initialization failed:", e);
                 // Display error to user or disable email features
-                setEmailStatus('emailErrorConfig'); // Show config error
+                // We might need to call setEmailStatus here, but the element might not exist yet.
+                // Consider setting a flag and showing the error when the results page is displayed.
             }
         } else {
             console.warn("EmailJS Public Key is not set. Email sending will be disabled.");
-            // Optionally disable email status display or show a permanent warning
-             // setEmailStatus('emailNotConfigured'); // Can show this permanently if needed
         }
 
     </script>
