@@ -297,7 +297,7 @@
         <div id="welcome-screen" class="page active">
             <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩配對遊戲！</span>
-                <span class="lang-en">Welcome to the Match Game!</span>
+                <span class="lang-en">Welcome to the Match Game! A</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 將物品拖曳到屬於新郎或新娘的欄位。<br>3. 完成後查看您的分數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -444,37 +444,15 @@
             errorInvalidEmail: { zh: "請輸入有效的電子郵件地址。", en: "Please enter a valid email address." },
             errorAlreadyPlayed: { zh: "此電子郵件似乎已完成遊戲。", en: "It looks like this email has already completed the game." }, // Updated text
             shareText: { zh: "在社交媒體上分享", en: "Share on social media" },
-            loadingText: { zh: "載入中...", en: "Loading..." }
+            loadingText: { zh: "載入中...", en: "Loading..." },
+            loadingPhotosError: { zh: "載入圖片失敗。請檢查圖片來源和清單檔案。", en: "Failed to load photos. Please check photo sources and manifest files." },
+            loadingPhotos: { zh: "載入圖片中...", en: "Loading photos..." }
         };
 
         // --- Game Configuration ---
-      const allPictures = [
-            // Replaced placehold.co with via.placeholder.com
-            { url: 'https://cdn.pixabay.com/photo/2018/08/04/11/30/draw-3583548_1280.png', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
-            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg?text=Bride+Item+12', owner: 'bride' },
-        ];
+        const BRIDE_MANIFEST_URL = 'https://raw.githubusercontent.com/AnneSoTw/match-game/refs/heads/main/bride_photo.json';
+        const GROOM_MANIFEST_URL = 'https://raw.githubusercontent.com/AnneSoTw/match-game/refs/heads/main/groom_photo.json';
+
         const picturesPerGame = 10; // How many pictures to use per game session
         const logoImage = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIi polarised="45" fill="#a08075"/><text x="50" y="55" font-family="Arial" font-size="30" fill="#ffffff" text-anchor="middle">LOGO?!</text></svg>'; // Logo URL as SVG Data URI
 
@@ -522,9 +500,10 @@
         let initialElementLeft, initialElementTop; // Store the initial position of the element
 
         // --- Functions ---
-
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
+        function showPage(pageId)
+        {
+            document.querySelectorAll('.page').forEach(page =>
+            {
                 page.classList.add('hidden');
                 page.classList.remove('active');
             });
@@ -537,7 +516,6 @@
                 console.error("Page not found:", pageId);
             }
         }
-
 
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -553,7 +531,86 @@
             return shuffled.slice(0, count);
         }
 
+        async function fetchPhotoManifests(brideManifestUrl, groomManifestUrl) {
+            try {
+                console.log("Fetching photo manifests...");
+                // Show loading indicator while fetching
+                startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingPhotos.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingPhotos.en}</span>`;
+                startError.classList.remove('text-red-600'); // Remove error styling
+                startError.classList.add('text-gray-600'); // Add neutral styling
 
+                // Fetch both manifests in parallel
+                const [brideResponse, groomResponse] = await Promise.all([
+                    fetch(brideManifestUrl),
+                    fetch(groomManifestUrl)
+                ]);
+
+                // Check response status explicitly
+                if (!brideResponse.ok) {
+                    console.error(`Failed to fetch bride manifest: HTTP status ${brideResponse.status} ${brideResponse.statusText}`);
+                    throw new Error(`HTTP error fetching bride manifest! status: ${brideResponse.status}`);
+                }
+                 if (!groomResponse.ok) {
+                    console.error(`Failed to fetch groom manifest: HTTP status ${groomResponse.status} ${groomResponse.statusText}`);
+                    throw new Error(`HTTP error fetching groom manifest! status: ${groomResponse.status}`);
+                }
+
+                let brideUrls, groomUrls;
+
+                try {
+                    brideUrls = await brideResponse.json(); // Expecting full URLs
+                    console.log("Bride manifest parsed:", brideUrls);
+                } catch (jsonError) {
+                    console.error("Failed to parse bride manifest JSON:", jsonError);
+                    throw new Error("Failed to parse bride manifest JSON.");
+                }
+
+                try {
+                    groomUrls = await groomResponse.json(); // Expecting full URLs
+                    console.log("Groom manifest parsed:", groomUrls);
+                } catch (jsonError) {
+                    console.error("Failed to parse groom manifest JSON:", jsonError);
+                    throw new Error("Failed to parse groom manifest JSON.");
+                }
+
+                // Validate the data structure (should be arrays of strings which are URLs)
+                if (!Array.isArray(brideUrls) || brideUrls.some(item => typeof item !== 'string' || !item.startsWith('http'))) {
+                     console.error("Invalid bride manifest format. Expected an array of strings (full URLs).");
+                     throw new Error("Invalid bride manifest format. Expected an array of strings (full URLs).");
+                }
+                 if (!Array.isArray(groomUrls) || groomUrls.some(item => typeof item !== 'string' || !item.startsWith('http'))) {
+                     console.error("Invalid groom manifest format. Expected an array of strings (full URLs).");
+                     throw new Error("Invalid groom manifest format. Expected an array of strings (full URLs).");
+                }
+
+                // Combine and format the pictures (URLs are already full)
+                const bridePictures = brideUrls.map(url => ({
+                     url: url,
+                     owner: 'bride'
+                }));
+                 const groomPictures = groomUrls.map(url => ({
+                     url: url,
+                     owner: 'groom'
+                }));
+
+                allPictures = [...bridePictures, ...groomPictures]; // Combine the arrays
+                console.log("Combined pictures:", allPictures);
+
+                startError.innerHTML = ''; // Clear loading message
+                startError.classList.remove('text-gray-600'); // Remove neutral styling
+
+            } catch (error) {
+                console.error("Error fetching photo manifests:", error);
+                allPictures = []; // Clear pictures on error
+                startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingPhotosError.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingPhotosError.en}</span>`;
+                startError.classList.remove('text-gray-600'); // Remove neutral styling
+                startError.classList.add('text-red-600'); // Add error styling
+                // Disable start button if photos couldn't load
+                startGameButton.disabled = true;
+
+            }
+        }
+        
         function startTimer() {
             stopTimer();
             startTime = Date.now();
@@ -580,7 +637,6 @@
                 </span>
                 <span class="value">${secondsElapsed}s</span>`;
         }
-
 
         function updateItemsLeft() {
             const itemsRemaining = gamePictures.length - currentPictureIndex;
@@ -949,7 +1005,7 @@
 
         // --- Initial Setup and Page Transitions ---
 
-        function setupAndStartGame() {
+       async function setupAndStartGame() {
             console.log("Setting up and starting game...");
             score = 0;
             currentPictureIndex = 0;
@@ -960,7 +1016,17 @@
             document.querySelectorAll('.dropped-item').forEach(item => item.remove());
             emailStatusEl.innerHTML = '';
             startError.innerHTML = '';
-
+            startGameButton.disabled = false;
+           
+           if (allPictures.length === 0) {
+                // Call fetchPhotoManifests without base URLs
+                await fetchPhotoManifests(BRIDE_MANIFEST_URL, GROOM_MANIFEST_URL);
+                if (allPictures.length === 0) {
+                     console.error("No pictures available after fetching manifests.");
+                     // Error message is already set by fetchPhotoManifests
+                     return; // Stop game setup if no pictures loaded
+                }
+            }
             gamePictures = selectRandomPictures(allPictures, picturesPerGame);
             if (gamePictures.length === 0) {
                 console.error("No pictures selected!");
