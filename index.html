@@ -609,7 +609,7 @@
 
                 // Add loading indicator (SVG Data URI)
                 const loadingImg = document.createElement('img');
-                loadingImg.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDUiIGZpbGw9IiNlMGUwZTAiLz48dGV4dCB4PSI1MCIgeT0iNTUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzAwMDAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TG9hZGluZy4uLjwvdGV4dD48L3N2Zz4='; // Placeholder loading image (SVG)
+                loadingImg.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDUiIGZpbGw9IiNlMGUwZTAiLz48dGV4dCB4PSI1MCIgeT0iNTUuMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMDAwMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg=='; // Placeholder loading image (SVG)
                 loadingImg.alt = 'Loading...';
                 loadingImg.classList.add('loading-indicator'); // Add a class for potential styling
                 currentPictureElement.appendChild(loadingImg);
@@ -849,15 +849,19 @@
 
                 const touch = e.touches[0];
                 const rect = targetElement.getBoundingClientRect();
-                dragOffsetX = touch.clientX - rect.left;
-                dragOffsetY = touch.clientY - rect.top;
 
-                // Set initial fixed position correctly
-                targetElement.style.left = `${rect.left}px`;
-                targetElement.style.top = `${rect.top}px`;
+                // Calculate offset from the center of the element to the touch point
+                dragOffsetX = touch.clientX - (rect.left + rect.width / 2);
+                dragOffsetY = touch.clientY - (rect.top + rect.height / 2);
+
+                // Set initial fixed position based on the touch point and the calculated offset
+                targetElement.style.position = 'fixed';
+                targetElement.style.left = `${touch.clientX - rect.width / 2}px`; // Position center at touch X
+                targetElement.style.top = `${touch.clientY - rect.height / 2}px`; // Position center at touch Y
+
 
                 console.log("Touch drag started.");
-                console.log(`touchstart: touch.clientX=${touch.clientX}, touch.clientY=${touch.clientY}, rect.left=${rect.left}, rect.top=${rect.top}, dragOffsetX=${dragOffsetX}, dragOffsetY=${dragOffsetY}`);
+                console.log(`touchstart: touch.clientX=${touch.clientX}, touch.clientY=${touch.clientY}, rect.width=${rect.width}, rect.height=${rect.height}, dragOffsetX=${dragOffsetX}, dragOffsetY=${dragOffsetY}`);
             } else {
                  console.log("Touch drag prevented: Not draggable or no owner.");
             }
@@ -868,9 +872,12 @@
             e.preventDefault();
 
             const touch = e.touches[0];
-            // Update fixed position based on finger movement AND the initial offset
-            const newX = touch.clientX - dragOffsetX;
-            const newY = touch.clientY - dragOffsetY;
+            const rect = currentPictureElement.getBoundingClientRect(); // Get current dimensions
+
+            // Position the element's top-left so its center is at the touch point
+            const newX = touch.clientX - rect.width / 2;
+            const newY = touch.clientY - rect.height / 2;
+
 
             currentPictureElement.style.left = `${newX}px`;
             currentPictureElement.style.top = `${newY}px`;
@@ -906,7 +913,7 @@
                 // Position is reset by handleDrop -> loadNextPicture
                 handleDrop(currentPictureElement, dropTarget, draggedOwner, targetOwner);
             } else {
-                console.log("Touch ended outside target.");
+                console.log("Touch ended outside target. Resetting position.");
                 // Reset position back to relative within its container
                  currentPictureElement.style.position = 'relative'; // Ensure it's back to relative
             }
@@ -988,7 +995,7 @@
             let alreadyPlayed = false;
             const storageKey = 'matchGamePlayed_' + userEmail.toLowerCase();
             try {
-                alreadyPlayed = localStorage.getItem(storageKey) === 'true';
+                localStorage.getItem(storageKey) === 'true';
             } catch (e) {
                  console.warn("LocalStorage check failed:", e);
             }
