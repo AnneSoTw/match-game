@@ -253,6 +253,57 @@
         .email-error { color: #c62828; }
         .email-sending { color: #6d4c41; }
 
+                /* Style for the temporary share canvas wrapper */
+        .share-canvas-wrapper {
+            position: absolute;
+            left: -9999px; /* Position off-screen */
+            top: -9999px;
+            width: 540px; /* Example width for 9:16 aspect ratio */
+            height: 960px; /* Example height for 9:16 aspect ratio */
+            display: flex; /* Use flexbox to center content */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+            background-color: #fffaf0; /* Match certificate background */
+            padding: 40px; /* Add some padding */
+            box-sizing: border-box;
+            overflow: hidden; /* Hide any overflow */
+        }
+         .share-canvas-wrapper .award-certificate {
+             border: none; /* Remove border for the captured version */
+             box-shadow: none; /* Remove shadow for the captured version */
+             padding: 0; /* Remove padding from the cloned content */
+             width: 100%; /* Make cloned content fill the wrapper */
+             height: auto; /* Allow height to adjust */
+             max-width: 100%;
+             max-height: 100%;
+             display: block; /* Ensure block display */
+             margin: 0; /* Remove margin */
+             /* Add flex properties to the cloned content as well if needed for internal centering */
+             display: flex;
+             flex-direction: column;
+             justify-content: center;
+             align-items: center;
+             text-align: center; /* Ensure text is centered */
+         }
+         /* Adjust font sizes within the cloned certificate for the smaller format */
+         .share-canvas-wrapper .award-title {
+             font-size: 1.5rem; /* Smaller title */
+         }
+         .share-canvas-wrapper .award-text {
+             font-size: 0.8rem; /* Smaller body text */
+             line-height: 1.5; /* Adjust line height */
+         }
+         .share-canvas-wrapper .award-text strong {
+             font-size: 0.9rem; /* Adjust strong text size */
+         }
+         .share-canvas-wrapper .award-logo {
+             width: 60px; /* Smaller logo */
+             height: 60px;
+         }
+         .share-canvas-wrapper .save-the-date-text {
+             font-size: 0.7rem; /* Smaller save the date text */
+         }
 
         /* Desktop Responsiveness */
         @media (min-width: 768px) {
@@ -297,7 +348,7 @@
         <div id="welcome-screen" class="page active">
             <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩配對遊戲！</span>
-                <span class="lang-en">Welcome to the Match Game!B</span>
+                <span class="lang-en">Welcome to the Match Game! A</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 將物品拖曳到屬於新郎或新娘的欄位。<br>3. 完成後查看您的分數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -907,7 +958,7 @@
                             await navigator.share({
                                 files: [file],
                                 title: 'Our Matchmaking Game Certificate!',
-                                text: `I scored ${score}/${gamePictures.length} on the Matchmaking Game! Can you beat my score?`
+                             //   text: `I scored ${score}/${gamePictures.length} on the Matchmaking Game! Can you beat my score?`
                             });
                             console.log("Certificate shared successfully.");
                         } catch (shareError) {
