@@ -297,7 +297,7 @@
         <div id="welcome-screen" class="page active">
             <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩配對遊戲！</span>
-                <span class="lang-en">Welcome to the Match Game! A</span>
+                <span class="lang-en">Welcome to the Match Game!B</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 將物品拖曳到屬於新郎或新娘的欄位。<br>3. 完成後查看您的分數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -401,7 +401,7 @@
                     <span class="lang-zh" id="share-text-zh">在社交媒體上分享</span>
                     <span class="lang-en" id="share-text-en">Share on social media</span>
                 </p>
-                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Share on Instagram">
+                <a href="#" id="instagram-share-link" rel="noopener noreferrer" class="social-icon-link" aria-label="Share on Instagram">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="36px" height="36px">
                         <defs>
                             <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
@@ -484,6 +484,8 @@
         const shareTextZh = document.getElementById('share-text-zh');
         const shareTextEn = document.getElementById('share-text-en');
         const awardLogo = document.getElementById('award-logo');
+        const instagramShareLink = document.getElementById('instagram-share-link'); // Get the Instagram link element
+        const awardCertificateElement = document.querySelector('.award-certificate'); // Get the certificate element
 
         // --- Game State Variables ---
         let userNickname = '';
@@ -853,7 +855,70 @@
                 });
         }
 
+        async function shareCertificate() {
+            console.log("Attempting to share certificate...");
+            if (!awardCertificateElement) {
+                console.error("Award certificate element not found.");
+                alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
+                return;
+            }
 
+            try {
+                // Use html2canvas to capture the certificate element
+                const canvas = await html2canvas(awardCertificateElement, {
+                    scale: window.devicePixelRatio, // Improve resolution on high-DPI screens
+                    logging: true, // Enable logging for debugging html2canvas
+                    useCORS: true // Attempt to use CORS for images if any
+                });
+                console.log("Certificate rendered to canvas.");
+
+                // Convert canvas to Blob
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        console.error("Failed to create blob from canvas.");
+                         alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
+                        return;
+                    }
+
+                    // Create a File object
+                    const file = new File([blob], 'match_game_certificate.png', { type: 'image/png' });
+                    console.log("Blob converted to File:", file);
+
+                    // Check if Web Share API Level 2 is supported
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            console.log("Web Share API supported. Sharing...");
+                            await navigator.share({
+                                files: [file],
+                                title: 'Our Matchmaking Game Certificate!',
+                                text: `I scored ${score}/${gamePictures.length} on the Matchmaking Game! Can you beat my score?`,
+                                url: window.location.href // Optional: share the game URL
+                            });
+                            console.log("Certificate shared successfully.");
+                        } catch (shareError) {
+                            console.error("Web Share failed:", shareError);
+                             // User likely cancelled the share dialog
+                             if (shareError.name !== 'AbortError') {
+                                alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert for other errors
+                             }
+                        }
+                    } else {
+                        console.warn("Web Share API Level 2 not supported or cannot share files.");
+                        // Fallback: Alert user or provide download link
+                        alert(TEXT_CONTENT.shareUnsupported.zh + '\n' + TEXT_CONTENT.shareUnsupported.en); // Basic fallback alert
+                        // Optionally, you could create a download link here for the image
+                        // const downloadLink = document.createElement('a');
+                        // downloadLink.href = canvas.toDataURL('image/png');
+                        // downloadLink.download = 'match_game_certificate.png';
+                        // downloadLink.click();
+                    }
+                }, 'image/png');
+
+            } catch (html2canvasError) {
+                console.error("Error rendering certificate with html2canvas:", html2canvasError);
+                 alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
+            }
+        }
         // --- Drag and Drop Event Listeners ---
 
         // Desktop Drag Events
@@ -1100,10 +1165,16 @@
         continueButton.addEventListener('click', () => showPage('start-screen'));
         startGameButton.addEventListener('click', validateAndInitGame);
         replayButton.addEventListener('click', replayGame);
-
+        // Add event listener for the Instagram share link
+        instagramShareLink.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent the default link behavior
+            shareCertificate(); // Call the share function
+        });
+        
         // --- Initial Display ---
         showPage('welcome-screen');
-
+        fetchPhotoManifests(BRIDE_MANIFEST_URL, GROOM_MANIFEST_URL); // Removed base URLs
+        
         // Initialize EmailJS
         if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
             try {
