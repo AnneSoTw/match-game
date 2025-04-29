@@ -297,7 +297,7 @@
         <div id="welcome-screen" class="page active">
             <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩配對遊戲！</span>
-                <span class="lang-en">Welcome to the Match Game! B</span>
+                <span class="lang-en">Welcome to the Match Game! A</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 將物品拖曳到屬於新郎或新娘的欄位。<br>3. 完成後查看您的分數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -428,9 +428,9 @@
 
     <script>
         // --- EmailJS Configuration ---
-        const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'; // Replace
-        const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'; // Replace
-        const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY'; // Replace
+        const EMAILJS_SERVICE_ID = 'service_3qozdwc';
+        const EMAILJS_TEMPLATE_ID = 'template_q69067c';
+        const EMAILJS_PUBLIC_KEY = 'cDxOmMxePGWSWrLPG';
 
         // --- Bilingual Text Content ---
         const TEXT_CONTENT = {
@@ -442,7 +442,6 @@
             emailNotConfigured: { zh: "電子郵件發送未配置。", en: "Email sending not configured." },
             errorEnterDetails: { zh: "請輸入您的姓名和電子郵件。", en: "Please enter both your name and email." },
             errorInvalidEmail: { zh: "請輸入有效的電子郵件地址。", en: "Please enter a valid email address." },
-            errorAlreadyPlayed: { zh: "此電子郵件似乎已完成遊戲。", en: "It looks like this email has already completed the game." }, // Updated text
             shareText: { zh: "在社交媒體上分享", en: "Share on social media" },
             loadingText: { zh: "載入中...", en: "Loading..." },
             loadingPhotosError: { zh: "載入圖片失敗。請檢查圖片來源和清單檔案。", en: "Failed to load photos. Please check photo sources and manifest files." },
@@ -1062,7 +1061,7 @@
                  return;
             }
 
-            let alreadyPlayed = false;
+      /*      let alreadyPlayed = false;
             const storageKey = 'matchGamePlayed_' + userEmail.toLowerCase();
             try {
                 localStorage.getItem(storageKey) === 'true';
@@ -1073,7 +1072,7 @@
                  console.log("Validation failed: Already played.");
                  startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorAlreadyPlayed.zh}</span><span class="lang-en">${TEXT_CONTENT.errorAlreadyPlayed.en}</span>`;
                  return;
-            }
+            }*/
 
             console.log("Validation successful.");
             setupAndStartGame();
