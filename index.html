@@ -297,7 +297,7 @@
         <div id="welcome-screen" class="page active">
             <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩配對遊戲！</span>
-                <span class="lang-en">Welcome to the Match Game! B</span>
+                <span class="lang-en">Welcome to the Match Game!</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 將物品拖曳到屬於新郎或新娘的欄位。<br>3. 完成後查看您的分數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -389,7 +389,7 @@
                       <span class="lang-zh">謹將此證書頒發給<br><strong id="award-nickname-zh" class="text-lg"></strong><br>感謝您與我們一同慶祝並完成配對遊戲<br>日期：<span id="completion-date-zh"></span><br>分數：<strong id="award-score-zh"></strong>，時間：<strong id="award-time-zh"></strong> 秒</span>
                      <span class="lang-en">This certificate is happily presented to<br><strong id="award-nickname-en" class="text-lg"></strong><br>for celebrating with us and completing the Match Game on <span id="completion-date-en"></span><br>with a score of <strong id="award-score-en"></strong> and a time of <strong id="award-time-en"></strong> seconds.</span>
                  </div>
-                 <img src="https://placehold.co/80x80/a1887f/ffffff?text=LOGO" alt="Logo" class="award-logo" id="award-logo" onerror="this.style.display='none'">
+                 <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iI2EwODA3NSIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjMwIiBmaWxsPSIjZmZmZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5MT0dPPyE8L3RleHQ+PC9zdmc+" alt="Logo Placeholder" class="award-logo" id="award-logo">
                  <p class="save-the-date-text">
                     <span class="lang-zh">MAS - 敬請期待 2222/02/02</span>
                     <span class="lang-en">MAS - Save the date 2222/02/02</span>
@@ -402,7 +402,7 @@
                     <span class="lang-en" id="share-text-en">Share on social media</span>
                 </p>
                 <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Share on Instagram">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32px" height="32px">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="36px" height="36px">
                         <defs>
                             <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
                                 <stop offset="0%" style="stop-color:#FFD600;stop-opacity:1" />
@@ -428,9 +428,9 @@
 
     <script>
         // --- EmailJS Configuration ---
-        const EMAILJS_SERVICE_ID = 'service_3qozdwc';
-        const EMAILJS_TEMPLATE_ID = 'template_q69067c';
-        const EMAILJS_PUBLIC_KEY = 'cDxOmMxePGWSWrLPG';
+        const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'; // Replace
+        const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'; // Replace
+        const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY'; // Replace
 
         // --- Bilingual Text Content ---
         const TEXT_CONTENT = {
@@ -472,7 +472,7 @@
             // Add more pictures...
         ];
         const picturesPerGame = 10; // How many pictures to use per game session
-        const logoImage = 'https://placehold.co/80x80/a1887f/ffffff?text=LOGO'; // Logo URL
+        const logoImage = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iI2EwODA3NSIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjMwIiBmaWxsPSIjZmZmZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5MT0dPPyE8L3RleHQ+PC9zdmc+'; // Logo URL as SVG Data URI
 
         // --- DOM Elements ---
         const welcomeScreen = document.getElementById('welcome-screen');
@@ -590,6 +590,7 @@
 
         // *** Corrected loadNextPicture ***
         function loadNextPicture() {
+            console.log("Attempting to load picture at index:", currentPictureIndex);
             // Reset styles and attributes FIRST
             currentPictureElement.style.opacity = 1;
             currentPictureElement.style.position = 'relative';
@@ -599,41 +600,65 @@
             currentPictureElement.draggable = false; // Ensure not draggable initially
             currentPictureElement.removeAttribute('data-owner');
             currentPictureElement.classList.remove('dragging');
-            // Set loading text
-            currentPictureElement.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingText.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingText.en}</span>`;
+            currentPictureElement.innerHTML = ''; // Clear previous content
 
             if (currentPictureIndex < gamePictures.length) {
                 updateItemsLeft();
                 const picture = gamePictures[currentPictureIndex];
+                console.log("Loading picture:", picture.url);
+
+                // Add loading indicator (SVG Data URI)
+                const loadingImg = document.createElement('img');
+                loadingImg.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDUiIGZpbGw9IiNlMGUwZTAiLz48dGV4dCB4PSI1MCIgeT0iNTUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzAwMDAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TG9hZGluZy4uLjwvdGV4dD48L3N2Zz4='; // Placeholder loading image (SVG)
+                loadingImg.alt = 'Loading...';
+                loadingImg.classList.add('loading-indicator'); // Add a class for potential styling
+                currentPictureElement.appendChild(loadingImg);
+                console.log("Added loading indicator.");
+
+
                 const img = document.createElement('img');
 
                 // Define onload and onerror BEFORE setting src
                 img.onload = () => {
+                    console.log(`Image loaded successfully: ${img.src}`);
                     // Check if this image is still the one we expect (prevents race conditions)
                     if (currentPictureIndex < gamePictures.length && gamePictures[currentPictureIndex].url === img.src) {
-                        currentPictureElement.innerHTML = ''; // Clear loading text
+                        currentPictureElement.innerHTML = ''; // Clear loading indicator
                         currentPictureElement.appendChild(img); // Add the loaded image
                         currentPictureElement.setAttribute('data-owner', picture.owner);
                         currentPictureElement.draggable = true; // Make draggable now
-                        console.log(`Image ${currentPictureIndex + 1} loaded: ${picture.url}, Owner: ${picture.owner}`);
+                        console.log(`Image ${currentPictureIndex + 1} loaded and displayed: ${picture.url}, Owner: ${picture.owner}`);
                     } else {
-                         console.log("Stale image loaded, ignoring.");
+                         console.log("Stale image loaded, ignoring and clearing loading indicator.");
+                         if (currentPictureElement.querySelector('.loading-indicator')) {
+                            currentPictureElement.innerHTML = '';
+                         }
                     }
                 };
                 img.onerror = () => {
                     console.error(`Failed to load image: ${picture.url}`);
                     // Check if this error corresponds to the current index
                      if (currentPictureIndex < gamePictures.length && gamePictures[currentPictureIndex].url === picture.url) {
-                        currentPictureElement.innerHTML = 'Error';
+                        currentPictureElement.innerHTML = 'Error loading image.'; // Show error text
+                         // Use an error placeholder image (SVG Data URI)
+                        const errorImg = document.createElement('img');
+                        errorImg.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNjYzI4MjgiLz48dGV4dCB4PSI1MCIgeT0iNTUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RXJyb3I8L3RleHQ+PC9zdmc+';
+                        errorImg.alt = 'Error';
+                        currentPictureElement.innerHTML = ''; // Clear previous content
+                        currentPictureElement.appendChild(errorImg);
+
                         // Skip to the next picture on error
                         currentPictureIndex++;
-                        setTimeout(loadNextPicture, 100);
+                        console.log("Skipping to next picture due to load error.");
+                        setTimeout(loadNextPicture, 500); // Add a small delay before loading the next one
                     }
                 };
 
                 // Set src AFTER defining handlers
                 img.src = picture.url;
                 img.alt = "Item to match";
+                console.log("Set image src:", img.src);
+
 
             } else {
                 console.log("All pictures processed. Ending game.");
@@ -832,6 +857,7 @@
                 targetElement.style.top = `${rect.top}px`;
 
                 console.log("Touch drag started.");
+                console.log(`touchstart: touch.clientX=${touch.clientX}, touch.clientY=${touch.clientY}, rect.left=${rect.left}, rect.top=${rect.top}, dragOffsetX=${dragOffsetX}, dragOffsetY=${dragOffsetY}`);
             } else {
                  console.log("Touch drag prevented: Not draggable or no owner.");
             }
@@ -843,8 +869,14 @@
 
             const touch = e.touches[0];
             // Update fixed position based on finger movement AND the initial offset
-            currentPictureElement.style.left = `${touch.clientX - dragOffsetX}px`;
-            currentPictureElement.style.top = `${touch.clientY - dragOffsetY}px`;
+            const newX = touch.clientX - dragOffsetX;
+            const newY = touch.clientY - dragOffsetY;
+
+            currentPictureElement.style.left = `${newX}px`;
+            currentPictureElement.style.top = `${newY}px`;
+
+            console.log(`touchmove: touch.clientX=${touch.clientX}, touch.clientY=${touch.clientY}, newX=${newX}, newY=${newY}`);
+
 
             highlightDropTarget(touch.clientX, touch.clientY);
         }, { passive: false });
