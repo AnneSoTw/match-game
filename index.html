@@ -448,31 +448,35 @@
         };
 
         // --- Game Configuration ---
-        const allPictures = [ // Replace with your actual image URLs and owners
-            { url: 'https://placehold.co/100x100/FF5733/white?text=G1', owner: 'groom' },
-            { url: 'https://placehold.co/100x100/33FF57/white?text=B1', owner: 'bride' },
-            { url: 'https://placehold.co/100x100/3366FF/white?text=G2', owner: 'groom' },
-            { url: 'https://placehold.co/100x100/FF33FF/white?text=B2', owner: 'bride' },
-            { url: 'https://placehold.co/100x100/FFFF33/black?text=G3', owner: 'groom' },
-            { url: 'https://placehold.co/100x100/33FFFF/black?text=B3', owner: 'bride' },
-            { url: 'https://placehold.co/100x100/FF5733/white?text=G4', owner: 'groom' },
-            { url: 'https://placehold.co/100x100/33FF57/white?text=B4', owner: 'bride' },
-            { url: 'https://placehold.co/100x100/3366FF/white?text=G5', owner: 'groom' },
-            { url: 'https://placehold.co/100x100/FF33FF/white?text=B5', owner: 'bride' },
-            { url: 'https://placehold.co/100x100/FFFF33/black?text=G6', owner: 'groom' },
-            { url: 'https://placehold.co/100x100/33FFFF/black?text=B6', owner: 'bride' },
-            { url: 'https://placehold.co/100x100/FF5733/white?text=G7', owner: 'groom' },
-            { url: 'https://placehold.co/100x100/33FF57/white?text=B7', owner: 'bride' },
-            { url: 'https://placehold.co/100x100/3366FF/white?text=G8', owner: 'groom' },
-            { url: 'https://placehold.co/100x100/FF33FF/white?text=B8', owner: 'bride' },
-            { url: 'https://placehold.co/100x100/FFFF33/black?text=G9', owner: 'groom' },
-            { url: 'https://placehold.co/100x100/33FFFF/black?text=B9', owner: 'bride' },
-            { url: 'https://placehold.co/100x100/FF5733/white?text=G10', owner: 'groom' },
-            { url: 'https://placehold.co/100x100/33FF57/white?text=B10', owner: 'bride' },
-            // Add more pictures...
+      const allPictures = [
+            // Replaced placehold.co with via.placeholder.com
+            { url: 'https://cdn.pixabay.com/photo/2018/08/04/11/30/draw-3583548_1280.png', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'bride' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg', owner: 'groom' },
+            { url: 'https://cdn.futura-sciences.com/sources/images/dossier/773/01-intro-773.jpg?text=Bride+Item+12', owner: 'bride' },
         ];
         const picturesPerGame = 10; // How many pictures to use per game session
-        const logoImage = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iI2EwODA3NSIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjMwIiBmaWxsPSIjZmZmZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5MT0dPPyE8L3RleHQ+PC9zdmc+'; // Logo URL as SVG Data URI
+        const logoImage = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIi polarised="45" fill="#a08075"/><text x="50" y="55" font-family="Arial" font-size="30" fill="#ffffff" text-anchor="middle">LOGO?!</text></svg>'; // Logo URL as SVG Data URI
 
         // --- DOM Elements ---
         const welcomeScreen = document.getElementById('welcome-screen');
@@ -514,8 +518,8 @@
         let currentPictureIndex = 0;
         let gamePictures = []; // Holds the pictures for the current game round
         let isDragging = false;
-        let dragOffsetX, dragOffsetY;
-        // No need for initialX/Y if we reset position to relative on touchend
+        let dragOffsetX, dragOffsetY; // Offset from the touch point to the *center* of the element
+        let initialElementLeft, initialElementTop; // Store the initial position of the element
 
         // --- Functions ---
 
@@ -850,18 +854,19 @@
                 const touch = e.touches[0];
                 const rect = targetElement.getBoundingClientRect();
 
-                // Calculate offset from the center of the element to the touch point
-                dragOffsetX = touch.clientX - (rect.left + rect.width / 2);
-                dragOffsetY = touch.clientY - (rect.top + rect.height / 2);
+                // Calculate offset from the element's top-left corner to the touch point
+                // This offset is used to maintain the relative position of the touch point on the element
+                dragOffsetX = touch.clientX - rect.left;
+                dragOffsetY = touch.clientY - rect.top;
 
                 // Set initial fixed position based on the touch point and the calculated offset
                 targetElement.style.position = 'fixed';
-                targetElement.style.left = `${touch.clientX - rect.width / 2}px`; // Position center at touch X
-                targetElement.style.top = `${touch.clientY - rect.height / 2}px`; // Position center at touch Y
+                targetElement.style.left = `${touch.clientX - dragOffsetX}px`;
+                targetElement.style.top = `${touch.clientY - dragOffsetY}px`;
 
 
                 console.log("Touch drag started.");
-                console.log(`touchstart: touch.clientX=${touch.clientX}, touch.clientY=${touch.clientY}, rect.width=${rect.width}, rect.height=${rect.height}, dragOffsetX=${dragOffsetX}, dragOffsetY=${dragOffsetY}`);
+                console.log(`touchstart: touch.clientX=${touch.clientX}, touch.clientY=${touch.clientY}, rect.left=${rect.left}, rect.top=${rect.top}, dragOffsetX=${dragOffsetX}, dragOffsetY=${dragOffsetY}`);
             } else {
                  console.log("Touch drag prevented: Not draggable or no owner.");
             }
@@ -872,11 +877,9 @@
             e.preventDefault();
 
             const touch = e.touches[0];
-            const rect = currentPictureElement.getBoundingClientRect(); // Get current dimensions
-
-            // Position the element's top-left so its center is at the touch point
-            const newX = touch.clientX - rect.width / 2;
-            const newY = touch.clientY - rect.height / 2;
+            // Position the element's top-left based on the touch point and the initial offset
+            const newX = touch.clientX - dragOffsetX;
+            const newY = touch.clientY - dragOffsetY;
 
 
             currentPictureElement.style.left = `${newX}px`;
