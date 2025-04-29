@@ -894,8 +894,7 @@
                             await navigator.share({
                                 files: [file],
                                 title: 'Our Matchmaking Game Certificate!',
-                                text: `I scored ${score}/${gamePictures.length} on the Matchmaking Game! Can you beat my score?`,
-                                url: window.location.href // Optional: share the game URL
+                                text: `I scored ${score}/${gamePictures.length} on the Matchmaking Game! Can you beat my score?`
                             });
                             console.log("Certificate shared successfully.");
                         } catch (shareError) {
@@ -909,11 +908,6 @@
                         console.warn("Web Share API Level 2 not supported or cannot share files.");
                         // Fallback: Alert user or provide download link
                         alert(TEXT_CONTENT.shareUnsupported.zh + '\n' + TEXT_CONTENT.shareUnsupported.en); // Basic fallback alert
-                        // Optionally, you could create a download link here for the image
-                        // const downloadLink = document.createElement('a');
-                        // downloadLink.href = canvas.toDataURL('image/png');
-                        // downloadLink.download = 'match_game_certificate.png';
-                        // downloadLink.click();
                     }
                 }, 'image/png');
 
