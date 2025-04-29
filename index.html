@@ -21,18 +21,18 @@
             padding: 1rem;
             color: #5d4037;
             box-sizing: border-box;
-             /* Prevent text selection issues during drag */
             user-select: none;
             -webkit-user-select: none;
             -ms-user-select: none;
+            overscroll-behavior: none;
         }
-        .game-container { /* Renamed from .container */
+        .game-container {
             background-color: #ffffff;
             border-radius: 1rem;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             padding: 2.5rem;
             width: 100%;
-            max-width: 800px; /* Match game might need more width */
+            max-width: 800px;
             text-align: center;
             border: 1px solid #d7ccc8;
             box-sizing: border-box;
@@ -40,9 +40,18 @@
         .romantic-font {
             font-family: 'Dancing Script', 'Noto Sans TC', cursive;
             color: #8d6e63;
+            line-height: 1.3; /* Adjust line height for script font */
         }
+        /* Bilingual text styling - General */
         .lang-zh { display: block; font-weight: bold; margin-bottom: 0.15rem; font-family: 'Noto Sans TC', sans-serif; color: inherit; }
         .lang-en { display: block; font-size: 0.9em; color: inherit; }
+
+        /* Bilingual styling for specific contexts */
+        .bilingual-label .lang-zh { display: block; } /* Ensure block display for labels */
+        .bilingual-label .lang-en { display: block; }
+        #game-info .bilingual-label { display: inline-block; vertical-align: middle; margin-right: 0.3em; text-align: right; } /* Label part */
+        #game-info .value { display: inline-block; vertical-align: middle; font-weight: bold; } /* Value part */
+
 
         .game-button {
             font-family: 'Merriweather', 'Noto Sans TC', serif; font-weight: bold;
@@ -56,7 +65,7 @@
         .game-button .lang-en { color: white; font-size: 0.8em; }
         .game-button:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); filter: brightness(1.05); }
         .game-button:active { transform: translateY(0); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-        .game-button:disabled { /* Style for disabled button */
+        .game-button:disabled {
             background-image: none;
             background-color: #cccccc;
             cursor: not-allowed;
@@ -79,45 +88,45 @@
              outline: none;
         }
         /* Page visibility */
-        .page { display: none; } /* Hide pages by default */
-        .page.active { display: block; } /* Show active page (kept for potential future use, but hidden class is primary) */
-        .hidden { display: none !important; } /* Use !important to ensure override if needed */
+        .page { display: none; }
+        .page.active { display: block; }
+        .hidden { display: none !important; }
 
         /* --- Match Game Specific Styles --- */
-        #game-info { /* Renamed from .timer-score */
+        #game-info {
             display: flex;
-            justify-content: space-between; /* Space out items left and timer */
+            justify-content: space-between;
             margin-bottom: 1.5rem;
             font-family: 'Merriweather', 'Noto Sans TC', serif;
             font-weight: bold;
             color: #8d6e63;
             font-size: 0.9rem;
+            align-items: center; /* Vertically align items */
         }
         #game-info > div {
             background-color: #f5f5f5;
             padding: 0.4rem 0.8rem;
             border-radius: 0.5rem;
             border: 1px solid #e0e0e0;
+            line-height: 1.2; /* Adjust line height for stacked labels */
         }
-        #game-info .lang-zh, #game-info .lang-en { display: inline; margin: 0 0.1em; }
-        #game-info .lang-en { font-size: 0.95em; }
 
 
-        .game-content { /* Container for drag item and drop columns */
+        .game-content {
              display: flex;
-             flex-direction: column; /* Mobile first: stack drag item above columns */
+             flex-direction: column;
              gap: 20px;
              margin-top: 20px;
         }
 
         .drag-item-container {
-            position: relative; /* Needed for absolute positioning of item during drag */
+            position: relative;
             width: 100%;
-            height: 120px; /* Fixed height */
+            height: 120px;
             display: flex;
             justify-content: center;
-            align-items: center; /* Center the placeholder/item */
-            margin-bottom: 1rem; /* Add space below drag item on mobile */
+            align-items: center;
+            margin-bottom: 1rem;
         }
 
         .drag-item {
@@ -133,20 +142,20 @@
             color: #555;
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            draggable: false; /* Initially false */
-            transition: transform 0.1s ease-out, opacity 0.3s ease; /* Add opacity transition */
-            touch-action: none; /* Prevent scrolling on the item itself */
-            position: relative; /* Use relative positioning initially */
-            z-index: 1; /* Default stacking */
+            draggable: false;
+            transition: transform 0.1s ease-out, opacity 0.3s ease;
+            touch-action: none;
+            position: relative;
+            z-index: 1;
         }
 
          .drag-item.dragging {
-             position: fixed; /* Use fixed positioning during drag for viewport relativity */
-             z-index: 1000; /* Bring to front */
+             position: fixed;
+             z-index: 1000;
              cursor: grabbing;
-             opacity: 0.7; /* Make slightly transparent */
-             transition: none; /* No transition while dragging */
-             /* ** REMOVED fixed left/top setting here - set dynamically in JS ** */
+             opacity: 0.7;
+             transition: none;
+             /* left/top set dynamically in JS */
          }
 
         .drag-item img {
@@ -154,12 +163,12 @@
             height: 100%;
             object-fit: cover;
             border-radius: 10px;
-            pointer-events: none; /* Prevent img from interfering with drag events */
+            pointer-events: none;
         }
 
         .drop-columns-container {
             display: flex;
-            flex-direction: column; /* Stack columns vertically on mobile */
+            flex-direction: column;
             gap: 15px;
             width: 100%;
         }
@@ -169,20 +178,19 @@
             border: 2px dashed #ccc;
             border-radius: 10px;
             padding: 15px;
-            min-height: 150px; /* Adjust height as needed */
+            min-height: 150px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             gap: 10px;
             transition: border-color 0.3s ease, background-color 0.3s ease;
-            /* ** ADDED: Prevent column itself from growing too tall ** */
-            max-height: 40vh; /* Limit column height, adjust as needed */
+            max-height: 40vh;
         }
 
         .drop-column.drag-over {
-            border-color: #a1887f; /* Muted brown border */
-            background-color: #f5f0e8; /* Light beige background */
+            border-color: #a1887f;
+            background-color: #f5f0e8;
         }
 
         .column-title {
@@ -191,26 +199,25 @@
             color: #5a3e36;
             flex-shrink: 0;
             align-self: center;
-            line-height: 1.4; /* For bilingual */
+            line-height: 1.4;
         }
         .column-title .lang-en { font-size: 0.9em; }
 
         .dropped-items-container {
             display: flex;
-            flex-wrap: wrap; /* Allow items to wrap */
+            flex-wrap: wrap;
             gap: 8px;
-            justify-content: center; /* Center items horizontally */
+            justify-content: center;
             width: 100%;
             align-items: flex-start;
-            min-height: 80px; /* Ensure container has some height */
-            /* ** ADDED: Enable vertical scrolling ** */
+            min-height: 80px;
             overflow-y: auto;
-            max-height: calc(40vh - 60px); /* Example: Limit height relative to column, adjust */
-            padding-bottom: 5px; /* Space for scrollbar */
+            max-height: calc(40vh - 60px);
+            padding-bottom: 5px;
         }
 
         .dropped-item {
-             width: 60px; /* Smaller size for dropped items */
+             width: 60px;
              height: 60px;
              border-radius: 8px;
              overflow: hidden;
@@ -225,7 +232,7 @@
             border-radius: 8px;
         }
 
-        /* Award Certificate & Social Share Styles (Copied) */
+        /* Award Certificate & Social Share Styles */
         .award-certificate { border: 8px double #c09b2d; padding: 2rem; margin-top: 2.5rem; background-color: #fffaf0; border-radius: 0.5rem; position: relative; text-align: center; }
         .award-title { font-family: 'Dancing Script', 'Noto Sans TC', cursive; color: #a1887f; font-size: 2rem; margin-bottom: 1.5rem; line-height: 1.3; }
         .award-text { color: #795548; font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem; }
@@ -250,36 +257,33 @@
         /* Desktop Responsiveness */
         @media (min-width: 768px) {
             .game-content {
-                flex-direction: row; /* Side-by-side layout */
-                align-items: flex-start; /* Align tops */
+                flex-direction: row;
+                align-items: flex-start;
             }
             .drag-item-container {
-                 width: 150px; /* Fixed width for the drag area */
-                 height: auto; /* Allow height to adjust */
-                 margin-bottom: 0; /* Remove bottom margin */
-                 margin-right: 20px; /* Add space between drag area and columns */
-                 align-self: center; /* Vertically center drag area */
-            }
-            .drag-item {
-                 /* Already relative, stays centered by flex container */
+                 width: 150px;
+                 height: auto;
+                 margin-bottom: 0;
+                 margin-right: 20px;
+                 align-self: center;
             }
              .drop-columns-container {
-                 flex-grow: 1; /* Take remaining space */
-                 flex-direction: row; /* Columns side-by-side */
+                 flex-grow: 1;
+                 flex-direction: row;
                  gap: 20px;
              }
              .drop-column {
-                 min-height: 300px; /* Taller columns on desktop */
-                 max-height: 60vh; /* Allow more height on desktop */
+                 min-height: 300px;
+                 max-height: 60vh;
                  padding: 20px;
              }
              .dropped-items-container {
-                 justify-content: flex-start; /* Align items to start */
-                 max-height: calc(60vh - 70px); /* Adjust max-height */
+                 justify-content: flex-start;
+                 max-height: calc(60vh - 70px);
                  min-height: 100px;
              }
              .dropped-item {
-                 width: 70px; /* Slightly larger dropped items */
+                 width: 70px;
                  height: 70px;
              }
         }
@@ -290,9 +294,10 @@
 
     <div class="game-container">
 
-        <div id="welcome-screen" class="page active"> <h1 class="text-4xl font-bold mb-6 romantic-font">
+        <div id="welcome-screen" class="page active">
+            <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩配對遊戲！</span>
-                <span class="lang-en">Welcome to the Match Game! 1</span>
+                <span class="lang-en">Welcome to the Match Game!</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 將物品拖曳到屬於新郎或新娘的欄位。<br>3. 完成後查看您的分數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -304,7 +309,8 @@
             </button>
         </div>
 
-        <div id="start-screen" class="page hidden"> <h1 class="text-4xl font-bold mb-6 romantic-font">
+        <div id="start-screen" class="page hidden">
+            <h1 class="text-4xl font-bold mb-6 romantic-font">
                  <span class="lang-zh">輸入您的資料</span>
                  <span class="lang-en">Enter Your Details</span>
             </h1>
@@ -321,24 +327,31 @@
             <p id="start-error" class="text-red-600 mt-3 text-sm"></p>
         </div>
 
-        <div id="game-screen" class="page hidden"> <h1 class="text-3xl font-bold mb-4 romantic-font">
+        <div id="game-screen" class="page hidden">
+            <h1 class="text-3xl font-bold mb-4 romantic-font">
                 <span class="lang-zh">這是誰的？</span>
                 <span class="lang-en">Whose is This?</span>
             </h1>
             <div id="game-info">
                 <div id="items-left-counter">
-                    <span class="lang-zh">剩餘物品:</span><span class="lang-en">Items Left:</span> 0
+                    <span class="bilingual-label">
+                        <span class="lang-zh">剩餘物品:</span>
+                        <span class="lang-en">Items Left:</span>
+                    </span>
+                    <span class="value">0</span>
                 </div>
                 <div id="timer-display">
-                    <span class="lang-zh">時間:</span><span class="lang-en">Time:</span> 0s
+                     <span class="bilingual-label">
+                        <span class="lang-zh">時間:</span>
+                        <span class="lang-en">Time:</span>
+                    </span>
+                    <span class="value">0s</span>
                 </div>
             </div>
             <div class="game-content">
                 <div class="drag-item-container">
                      <div id="currentPicture" class="drag-item">
-                        <span class="lang-zh">載入中...</span>
-                        <span class="lang-en">Loading...</span>
-                     </div>
+                        </div>
                 </div>
                 <div class="drop-columns-container">
                     <div id="groomColumn" class="drop-column" data-owner="groom">
@@ -346,22 +359,21 @@
                             <span class="lang-zh">新郎</span>
                             <span class="lang-en">Groom</span>
                         </div>
-                        <div class="dropped-items-container">
-                            </div>
+                        <div class="dropped-items-container"></div>
                     </div>
                     <div id="brideColumn" class="drop-column" data-owner="bride">
                          <div class="column-title">
                              <span class="lang-zh">新娘</span>
                              <span class="lang-en">Bride</span>
                          </div>
-                         <div class="dropped-items-container">
-                             </div>
+                         <div class="dropped-items-container"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="results-screen" class="page hidden"> <h1 class="text-4xl font-bold mb-5 romantic-font">
+        <div id="results-screen" class="page hidden">
+            <h1 class="text-4xl font-bold mb-5 romantic-font">
                  <span class="lang-zh">遊戲完成！</span>
                  <span class="lang-en">Game Complete!</span>
              </h1>
@@ -507,7 +519,6 @@
 
         // --- Functions ---
 
-        // Simplified showPage function using only the hidden class
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.add('hidden');
@@ -543,7 +554,7 @@
             stopTimer();
             startTime = Date.now();
             secondsElapsed = 0;
-            timerDisplay.innerHTML = `<span class="lang-zh">時間:</span><span class="lang-en">Time:</span> ${secondsElapsed}s`;
+            updateTimerDisplay();
             timerInterval = setInterval(updateTimer, 1000);
         }
 
@@ -554,60 +565,88 @@
 
         function updateTimer() {
             secondsElapsed = Math.floor((Date.now() - startTime) / 1000);
-            timerDisplay.innerHTML = `<span class="lang-zh">時間:</span><span class="lang-en">Time:</span> ${secondsElapsed}s`;
+             updateTimerDisplay();
         }
+
+        function updateTimerDisplay() {
+             timerDisplay.innerHTML = `
+                <span class="bilingual-label">
+                    <span class="lang-zh">時間:</span>
+                    <span class="lang-en">Time:</span>
+                </span>
+                <span class="value">${secondsElapsed}s</span>`;
+        }
+
 
         function updateItemsLeft() {
             const itemsRemaining = gamePictures.length - currentPictureIndex;
-            itemsLeftCounter.innerHTML = `<span class="lang-zh">剩餘物品:</span><span class="lang-en">Items Left:</span> ${itemsRemaining >= 0 ? itemsRemaining : 0}`;
+            itemsLeftCounter.innerHTML = `
+                <span class="bilingual-label">
+                    <span class="lang-zh">剩餘物品:</span>
+                    <span class="lang-en">Items Left:</span>
+                </span>
+                <span class="value">${itemsRemaining >= 0 ? itemsRemaining : 0}</span>`;
         }
 
+        // *** Corrected loadNextPicture ***
         function loadNextPicture() {
-            // Reset draggable item appearance and state
-            currentPictureElement.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingText.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingText.en}</span>`;
-            currentPictureElement.draggable = false;
-            currentPictureElement.removeAttribute('data-owner');
-            currentPictureElement.classList.remove('dragging'); // Ensure dragging class is removed
+            // Reset styles and attributes FIRST
             currentPictureElement.style.opacity = 1;
-            currentPictureElement.style.position = 'relative'; // Reset position to relative
+            currentPictureElement.style.position = 'relative';
             currentPictureElement.style.left = 'auto';
             currentPictureElement.style.top = 'auto';
             currentPictureElement.style.transform = 'none';
+            currentPictureElement.draggable = false; // Ensure not draggable initially
+            currentPictureElement.removeAttribute('data-owner');
+            currentPictureElement.classList.remove('dragging');
+            // Set loading text
+            currentPictureElement.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingText.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingText.en}</span>`;
 
             if (currentPictureIndex < gamePictures.length) {
-                updateItemsLeft(); // Update counter
+                updateItemsLeft();
                 const picture = gamePictures[currentPictureIndex];
                 const img = document.createElement('img');
-                img.src = picture.url;
-                img.alt = "Item to match"; // Add alt text
 
+                // Define onload and onerror BEFORE setting src
                 img.onload = () => {
-                    currentPictureElement.innerHTML = ''; // Clear loading text
-                    currentPictureElement.appendChild(img);
-                    currentPictureElement.setAttribute('data-owner', picture.owner);
-                    currentPictureElement.draggable = true; // Enable drag
-                    console.log(`Image ${currentPictureIndex + 1} loaded: ${picture.url}, Owner: ${picture.owner}`);
+                    // Check if this image is still the one we expect (prevents race conditions)
+                    if (currentPictureIndex < gamePictures.length && gamePictures[currentPictureIndex].url === img.src) {
+                        currentPictureElement.innerHTML = ''; // Clear loading text
+                        currentPictureElement.appendChild(img); // Add the loaded image
+                        currentPictureElement.setAttribute('data-owner', picture.owner);
+                        currentPictureElement.draggable = true; // Make draggable now
+                        console.log(`Image ${currentPictureIndex + 1} loaded: ${picture.url}, Owner: ${picture.owner}`);
+                    } else {
+                         console.log("Stale image loaded, ignoring.");
+                    }
                 };
                 img.onerror = () => {
                     console.error(`Failed to load image: ${picture.url}`);
-                    currentPictureElement.innerHTML = 'Error loading image';
-                    // Skip to the next picture on error
-                    currentPictureIndex++;
-                    setTimeout(loadNextPicture, 100); // Try loading next after delay
+                    // Check if this error corresponds to the current index
+                     if (currentPictureIndex < gamePictures.length && gamePictures[currentPictureIndex].url === picture.url) {
+                        currentPictureElement.innerHTML = 'Error';
+                        // Skip to the next picture on error
+                        currentPictureIndex++;
+                        setTimeout(loadNextPicture, 100);
+                    }
                 };
+
+                // Set src AFTER defining handlers
+                img.src = picture.url;
+                img.alt = "Item to match";
+
             } else {
-                // Game over
                 console.log("All pictures processed. Ending game.");
                 updateItemsLeft(); // Show 0 items left
                 endGame();
             }
         }
 
+
         function handleDrop(draggedElement, dropTarget, draggedOwner, targetOwner) {
             const pictureImgElement = draggedElement.querySelector('img');
             const pictureUrl = pictureImgElement ? pictureImgElement.src : '';
 
-            // Create a new element for the dropped item
             const droppedItem = document.createElement('div');
             droppedItem.classList.add('dropped-item');
             if (pictureImgElement) {
@@ -616,19 +655,17 @@
                 droppedImg.alt = "Dropped Item";
                 droppedItem.appendChild(droppedImg);
             } else {
-                droppedItem.textContent = 'Error'; // Should not happen if img loaded
+                droppedItem.textContent = 'Error';
             }
 
-            // Append to the correct column's item container
             const droppedItemsContainer = dropTarget.querySelector('.dropped-items-container');
             if (droppedItemsContainer) {
-                droppedItemsContainer.appendChild(droppedItem); // Append consistently
+                droppedItemsContainer.appendChild(droppedItem);
             } else {
-                console.error("Dropped items container not found in target column!");
-                dropTarget.appendChild(droppedItem); // Fallback append
+                console.error("Dropped items container not found!");
+                dropTarget.appendChild(droppedItem);
             }
 
-            // Check correctness and update score
             if (draggedOwner === targetOwner) {
                 score++;
                 console.log(`Correct drop! Owner: ${draggedOwner}. Score: ${score}`);
@@ -636,14 +673,17 @@
                 console.log(`Incorrect drop! Dragged: ${draggedOwner}, Target: ${targetOwner}`);
             }
 
-            // Reset the draggable element for the next picture
-            draggedElement.style.opacity = 0; // Hide the current item temporarily
+            // Hide the dragged element smoothly before loading next
+            draggedElement.style.transition = 'opacity 0.2s ease-out';
+            draggedElement.style.opacity = 0;
 
-            // Increment index and load next picture after a short delay
+
             currentPictureIndex++;
+            // Wait for fade out before loading next
             setTimeout(() => {
                 loadNextPicture();
-            }, 100); // Short delay before loading next
+                 // Opacity and transition reset happens in loadNextPicture
+            }, 200); // Delay matches transition duration
         }
 
 
@@ -652,7 +692,6 @@
             const finalScoreText = `${score} / ${gamePictures.length}`;
             console.log(`Game Over. Final Score: ${finalScoreText}, Time: ${secondsElapsed}s`);
 
-            // Populate Certificate
             const today = new Date();
             const dateZh = today.toLocaleDateString('zh-TW');
             const dateEn = today.toLocaleDateString('en-US');
@@ -662,28 +701,25 @@
             awardNicknameEn.textContent = userNickname;
             completionDateZh.textContent = dateZh;
             completionDateEn.textContent = dateEn;
-            awardScoreZh.textContent = finalScoreText; // Use X / Y format
-            awardScoreEn.textContent = finalScoreText; // Use X / Y format
+            awardScoreZh.textContent = finalScoreText;
+            awardScoreEn.textContent = finalScoreText;
             awardTimeZh.textContent = awardTimeText;
             awardTimeEn.textContent = awardTimeText;
 
             shareTextZh.textContent = TEXT_CONTENT.shareText.zh;
             shareTextEn.textContent = TEXT_CONTENT.shareText.en;
 
-            awardLogo.src = logoImage; // Use the defined logo image
+            awardLogo.src = logoImage;
 
-            // Show results page
-            showPage('results-screen'); // Use ID directly
-            replayButton.classList.remove('hidden'); // Show replay button
+            showPage('results-screen');
+            replayButton.classList.remove('hidden');
 
-            // Send email
             sendResultsEmail();
 
-            // Mark as played
              try {
-                localStorage.setItem('matchGamePlayed_' + userEmail.toLowerCase(), 'true'); // Use unique key
+                localStorage.setItem('matchGamePlayed_' + userEmail.toLowerCase(), 'true');
              } catch (e) {
-                console.warn("LocalStorage not available or failed to write.");
+                console.warn("LocalStorage write failed:", e);
              }
         }
 
@@ -693,10 +729,9 @@
              if (statusKey === 'emailSuccess') className = 'email-success';
              if (statusKey.startsWith('emailError') || statusKey === 'emailNotConfigured') className = 'email-error';
 
-             // Ensure the status element exists before setting innerHTML
              if (emailStatusEl) {
                 emailStatusEl.innerHTML = `<span class="lang-zh">${status.zh}</span><span class="lang-en">${status.en}</span>`;
-                emailStatusEl.className = className; // Set class for styling
+                emailStatusEl.className = className;
              } else {
                  console.error("Email status element not found!");
              }
@@ -706,22 +741,21 @@
             if (!EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' ||
                 !EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID' ||
                 !EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
-                console.warn("EmailJS credentials are placeholders. Skipping email send.");
+                console.warn("EmailJS credentials placeholders. Skipping email send.");
                 setEmailStatus('emailNotConfigured');
                 return;
             }
 
             setEmailStatus('emailSending');
             const templateParams = {
-                // Ensure these match your EmailJS template variables
                 nickname: userNickname,
                 email: userEmail,
-                score: `${score} / ${gamePictures.length}`, // Send score as string X/Y
+                score: `${score} / ${gamePictures.length}`,
                 time: secondsElapsed,
-                game_type: 'Match Game' // Identify the game type
+                game_type: 'Match Game'
             };
 
-            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams) // Removed Public Key from send() call - init handles it
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
                 .then((response) => {
                    console.log('EmailJS SUCCESS!', response.status, response.text);
                    setEmailStatus('emailSuccess');
@@ -752,7 +786,9 @@
         });
 
         currentPictureElement.addEventListener('dragend', (e) => {
-            e.target.style.opacity = '1';
+             if (!e.dataTransfer || e.dataTransfer.dropEffect === 'none') {
+                 e.target.style.opacity = '1';
+             }
             console.log("Desktop drag ended.");
         });
 
@@ -784,16 +820,14 @@
             if (targetElement.draggable && targetElement.hasAttribute('data-owner')) {
                 e.preventDefault();
                 isDragging = true;
-                targetElement.classList.add('dragging'); // Applies fixed position, z-index, opacity
+                targetElement.classList.add('dragging');
 
                 const touch = e.touches[0];
-                const rect = targetElement.getBoundingClientRect(); // Get initial position relative to viewport
-
-                // Calculate offset from the touch point to the element's top-left corner
+                const rect = targetElement.getBoundingClientRect();
                 dragOffsetX = touch.clientX - rect.left;
                 dragOffsetY = touch.clientY - rect.top;
 
-                // **Set initial fixed position correctly**
+                // Set initial fixed position correctly
                 targetElement.style.left = `${rect.left}px`;
                 targetElement.style.top = `${rect.top}px`;
 
@@ -808,7 +842,7 @@
             e.preventDefault();
 
             const touch = e.touches[0];
-            // **Update fixed position based on finger movement and initial offset**
+            // Update fixed position based on finger movement AND the initial offset
             currentPictureElement.style.left = `${touch.clientX - dragOffsetX}px`;
             currentPictureElement.style.top = `${touch.clientY - dragOffsetY}px`;
 
@@ -817,15 +851,15 @@
 
         currentPictureElement.addEventListener('touchend', (e) => {
             if (!isDragging) return;
-            e.preventDefault();
+            // No preventDefault needed here usually
 
             isDragging = false;
-            // Remove dragging class to remove fixed positioning and opacity
+            // Remove dragging class FIRST to remove fixed positioning
             currentPictureElement.classList.remove('dragging');
-            // Reset inline styles set during drag
+            // Then reset inline styles that were set during drag
             currentPictureElement.style.left = 'auto';
             currentPictureElement.style.top = 'auto';
-            currentPictureElement.style.opacity = '1'; // Ensure opacity is reset
+            currentPictureElement.style.opacity = '1';
 
 
             const touch = e.changedTouches[0];
@@ -837,11 +871,11 @@
                 const draggedOwner = currentPictureElement.getAttribute('data-owner');
                 const targetOwner = dropTarget.dataset.owner;
                 console.log(`Touch drop detected on ${targetOwner} column.`);
-                // Position is reset in handleDrop -> loadNextPicture
+                // Position is reset by handleDrop -> loadNextPicture
                 handleDrop(currentPictureElement, dropTarget, draggedOwner, targetOwner);
             } else {
                 console.log("Touch ended outside target.");
-                // No need to animate back, loadNextPicture will reset the original element
+                // Reset position back to relative within its container
                  currentPictureElement.style.position = 'relative'; // Ensure it's back to relative
             }
         });
@@ -849,13 +883,11 @@
         function getDropTarget(x, y) {
             let target = null;
             const originalVisibility = currentPictureElement.style.visibility;
-            // Temporarily hide the element being dragged IF it's currently fixed positioned
-            if (currentPictureElement.classList.contains('dragging')) {
+            if (isDragging) {
                 currentPictureElement.style.visibility = 'hidden';
             }
             const elementUnderTouch = document.elementFromPoint(x, y);
-             // Restore visibility
-            if (currentPictureElement.classList.contains('dragging')) {
+            if (isDragging) {
                 currentPictureElement.style.visibility = 'visible';
             }
 
@@ -877,43 +909,38 @@
 
         function setupAndStartGame() {
             console.log("Setting up and starting game...");
-            // Reset game state variables
             score = 0;
             currentPictureIndex = 0;
             gamePictures = [];
             startTime = null;
             secondsElapsed = 0;
 
-            // Clear previous game elements
             document.querySelectorAll('.dropped-item').forEach(item => item.remove());
-            emailStatusEl.innerHTML = ''; // Clear email status
-            startError.innerHTML = ''; // Clear start error
+            emailStatusEl.innerHTML = '';
+            startError.innerHTML = '';
 
-            // Prepare game
             gamePictures = selectRandomPictures(allPictures, picturesPerGame);
             if (gamePictures.length === 0) {
-                console.error("No pictures selected for the game!");
+                console.error("No pictures selected!");
                 startError.innerHTML = `<span class="lang-zh">錯誤：無法載入圖片。</span><span class="lang-en">Error: Could not load pictures.</span>`;
                 return;
             }
-            console.log(`Selected ${gamePictures.length} pictures for this round.`);
+            console.log(`Selected ${gamePictures.length} pictures.`);
 
-            // Show game screen and hide others
-            showPage('game-screen'); // Use ID directly
-            replayButton.classList.add('hidden'); // Hide replay button
+            showPage('game-screen');
+            replayButton.classList.add('hidden');
 
-            // Start game logic
-            updateItemsLeft(); // Show initial count
-            loadNextPicture(); // Load the first picture
+            updateItemsLeft();
+            loadNextPicture(); // Load first picture
             startTimer();
-            console.log("Game setup complete. Starting game timer and loading first picture.");
+            console.log("Game setup complete.");
         }
 
         function validateAndInitGame() {
             console.log("Validating and initializing game...");
             userNickname = nicknameInput.value.trim();
             userEmail = emailInput.value.trim();
-            startError.innerHTML = ''; // Clear previous errors
+            startError.innerHTML = '';
 
             if (!userNickname || !userEmail) {
                 console.log("Validation failed: Name or email empty.");
@@ -926,7 +953,6 @@
                  return;
             }
 
-            // Replay check (using a unique key)
             let alreadyPlayed = false;
             const storageKey = 'matchGamePlayed_' + userEmail.toLowerCase();
             try {
@@ -937,12 +963,9 @@
             if (alreadyPlayed) {
                  console.log("Validation failed: Already played.");
                  startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorAlreadyPlayed.zh}</span><span class="lang-en">${TEXT_CONTENT.errorAlreadyPlayed.en}</span>`;
-                 // Optionally disable start button here if needed
-                 // startGameButton.disabled = true;
                  return;
             }
 
-            // If all checks pass:
             console.log("Validation successful.");
             setupAndStartGame();
         }
@@ -950,40 +973,36 @@
         function replayGame() {
              console.log("Replay button clicked.");
              if (userNickname && userEmail) {
-                 // Clear the "already played" flag for this user for the replay
                  const storageKey = 'matchGamePlayed_' + userEmail.toLowerCase();
                  try {
                      localStorage.removeItem(storageKey);
                      console.log("Removed 'already played' flag for replay.");
                  } catch(e) {
-                     console.warn("Could not remove 'already played' flag from localStorage:", e);
+                     console.warn("Could not remove 'already played' flag:", e);
                  }
-                 setupAndStartGame(); // Reuse stored details
+                 setupAndStartGame();
              } else {
                  console.log("User details missing, going back to start screen.");
-                 showPage('start-screen'); // Fallback if details are missing
+                 showPage('start-screen');
              }
         }
 
 
         // --- Event Listeners ---
-        continueButton.addEventListener('click', () => showPage('start-screen')); // Use ID
+        continueButton.addEventListener('click', () => showPage('start-screen'));
         startGameButton.addEventListener('click', validateAndInitGame);
         replayButton.addEventListener('click', replayGame);
 
         // --- Initial Display ---
-        showPage('welcome-screen'); // Start with the welcome page
+        showPage('welcome-screen');
 
-        // Initialize EmailJS (Important: Do this once on load)
+        // Initialize EmailJS
         if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
             try {
-                 emailjs.init(EMAILJS_PUBLIC_KEY); // Initialize with Public Key
+                 emailjs.init(EMAILJS_PUBLIC_KEY);
                  console.log("EmailJS Initialized.");
             } catch(e) {
                 console.error("EmailJS Initialization failed:", e);
-                // Display error to user or disable email features
-                // We might need to call setEmailStatus here, but the element might not exist yet.
-                // Consider setting a flag and showing the error when the results page is displayed.
             }
         } else {
             console.warn("EmailJS Public Key is not set. Email sending will be disabled.");
