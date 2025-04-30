@@ -295,7 +295,7 @@
              margin-bottom: 1.5rem; /* Added margin below main text */
          }
          .share-canvas-wrapper .award-text strong {
-             font-size: 1.1rem; /* Adjust strong text size */
+             font-size: 1rem; /* Adjust strong text size */
          }
           /* Container for logo and save the date */
          .share-canvas-wrapper .bottom-section {
@@ -372,7 +372,7 @@
         <div id="welcome-screen" class="page active">
             <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩配對遊戲！</span>
-                <span class="lang-en">Welcome to the Match Game! C</span>
+                <span class="lang-en">Welcome to the Match Game! A</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 將物品拖曳到屬於新郎或新娘的欄位。<br>3. 完成後查看您的分數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -956,17 +956,14 @@
                 const bottomSection = document.createElement('div');
                 bottomSection.classList.add('bottom-section'); // Use the CSS class for styling
 
-                // Append the cloned logo and save-the-date to the new container
-                if (clonedSaveTheDate) {
-                    bottomSection.appendChild(clonedSaveTheDate);
+               if (clonedSaveTheDate && clonedSaveTheDate.parentNode) {
+                     clonedSaveTheDate.parentNode.removeChild(clonedSaveTheDate); // Remove from original position
+                     bottomSection.appendChild(clonedSaveTheDate); // Add to new container
                 }
-                 if (clonedLogo) {
-                    bottomSection.appendChild(clonedLogo);
+                 if (clonedLogo && clonedLogo.parentNode) {
+                     clonedLogo.parentNode.removeChild(clonedLogo); // Remove from original position
+                     bottomSection.appendChild(clonedLogo); // Add to new container
                  }
-
-                // Remove the original logo and save-the-date from the cloned certificate
-                if (clonedLogo) clonedLogo.remove();
-                if (clonedSaveTheDate) clonedSaveTheDate.remove();
 
                 // Append the new bottom section container to the cloned certificate
                 certificateClone.appendChild(bottomSection);
