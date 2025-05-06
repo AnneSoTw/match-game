@@ -253,87 +253,81 @@
         .email-error { color: #c62828; }
         .email-sending { color: #6d4c41; }
 
-        /* UPDATED: Style for the temporary share canvas wrapper (9:16 aspect ratio) */
+        /* Style for the temporary share canvas wrapper */
         .share-canvas-wrapper {
             position: absolute;
             left: -9999px; /* Position off-screen */
             top: -9999px;
-            width: 540px;  /* Base width for 9:16 aspect ratio */
-            height: 960px; /* Base height for 9:16 aspect ratio */
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Center certificate vertically in wrapper */
-            align-items: center; /* Center certificate horizontally in wrapper */
+            width: 540px; /* Example width for 9:16 aspect ratio */
+            height: 960px; /* Example height for 9:16 aspect ratio */
+            display: flex; /* Use flexbox to center content */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
             background-color: #fffaf0; /* Match certificate background */
-            padding: 20px; /* Reduced padding around the certificate content */
+            padding: 40px; /* Add some padding */
             box-sizing: border-box;
-            overflow: hidden; /* Clip content to these dimensions */
+            overflow: hidden; /* Hide any overflow */
         }
-         /* UPDATED: Styles for the cloned certificate *inside* the share wrapper */
          .share-canvas-wrapper .award-certificate {
-             border: 6px double #c09b2d; /* Slightly thinner border */
-             box-shadow: none;
-             padding: 1rem; /* Reduced padding inside the certificate */
-             width: 100%; 
-             height: 100%; 
+             border: 8px double #c09b2d; /* Keep the border for the captured version */
+             box-shadow: none; /* Remove shadow for the captured version */
+             padding: 2rem; /* Keep padding inside the certificate content */
+             width: 100%; /* Make cloned content fill the wrapper */
+             height: auto; /* Allow height to adjust */
              max-width: 100%;
-             margin: 0;
+             margin: 0; /* Remove margin */
              display: flex;
              flex-direction: column;
-             justify-content: space-between; /* Distribute space: title, text, bottom */
+             justify-content: space-between;
              align-items: center;
-             text-align: center;
-             box-sizing: border-box;
-             background-color: #fffaf0; 
+             text-align: center; /* Ensure text is centered */
+             box-sizing: border-box; /* Include padding in width/height */
          }
-         /* UPDATED: Adjust font sizes and margins within the cloned certificate for story format */
+         /* Adjust font sizes within the cloned certificate for the smaller format */
          .share-canvas-wrapper .award-title {
-             font-size: 1.6rem; /* Reduced title font size */
-             margin-bottom: 0.8rem; /* Reduced margin */
-             line-height: 1.2;
+             font-size: 2rem; /* Smaller title */
+             margin-bottom: 1.2rem; /* Adjusted margin */
          }
          .share-canvas-wrapper .award-text {
-             font-size: 0.8rem; /* Reduced body text font size */
-             line-height: 1.35; /* Reduced line height */
-             margin-bottom: 0.8rem; /* Reduced margin */
-             overflow: hidden; /* Hide text overflow if it's still too much */
-             max-height: 50%; /* Attempt to constrain text block height */
+             font-size: 1rem; /* Smaller body text */
+             line-height: 1.6; /* Adjust line height */
+             margin-bottom: 1.5rem; /* Added margin below main text */
          }
          .share-canvas-wrapper .award-text strong {
-             font-size: 0.85rem; /* Adjust strong text size */
+             font-size: 1rem; /* Adjust strong text size */
          }
-         /* UPDATED: Container for logo and save the date at the bottom of the story image */
+          /* Container for logo and save the date */
          .share-canvas-wrapper .bottom-section {
              display: flex;
-             justify-content: space-between;
-             align-items: flex-end; 
-             width: 100%;
+             justify-content: space-between; /* Space out items */
+             align-items: flex-end; /* Align items to the bottom */
+             width: 100%; /* Take full width */
              margin-top: auto; /* Push this section to the bottom */
-             padding: 0 0.25rem; /* Reduced horizontal padding */
+             padding: 0 1rem; /* Add horizontal padding */
              box-sizing: border-box;
-             flex-shrink: 0; /* Prevent this section from shrinking */
          }
 
          .share-canvas-wrapper .award-logo {
-             width: 50px; /* Reduced logo size */
-             height: 50px;
-             margin: 0; 
-             order: 2; 
-             object-fit: contain;
-             flex-shrink: 0; /* Prevent logo from shrinking */
+             width: 70px; /* Adjusted logo size */
+             height: 70px;
+             margin: 0; /* Remove default margin */
+             order: 2; /* Place logo on the right */
+             opacity: 0.8; /* Subtle stamp effect */
+             filter: grayscale(50%); /* Subtle grayscale */
+             /* transform: rotate(5deg); /* Optional: slight rotation for stamp feel */
          }
          .share-canvas-wrapper .save-the-date-text {
-             font-size: 0.7rem; /* Reduced save the date text size */
-             color: #795548; 
-             font-weight: normal; 
-             line-height: 1.15; /* Reduced line height */
-             margin: 0; 
-             text-align: left; 
-             order: 1; 
-             flex-grow: 1; 
-             padding-right: 0.25rem; /* Reduced space */
+             font-size: 0.8rem; /* Adjusted save the date text size */
+             color: #795548; /* Match body text color */
+             font-weight: normal; /* Less bold */
+             line-height: 1.3;
+             margin: 0; /* Remove default margin */
+             text-align: left; /* Align text to the left */
+             order: 1; /* Place text on the left */
+             flex-grow: 1; /* Allow text to take available space */
+             padding-right: 1rem; /* Space between text and logo */
          }
-
 
         /* Desktop Responsiveness */
         @media (min-width: 768px) {
@@ -378,7 +372,7 @@
         <div id="welcome-screen" class="page active">
             <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩配對遊戲！</span>
-                <span class="lang-en">Welcome to the Match Game! B</span>
+                <span class="lang-en">Welcome to the Match Game! A</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 將物品拖曳到屬於新郎或新娘的欄位。<br>3. 完成後查看您的分數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -509,7 +503,7 @@
 
     <script>
         // --- EmailJS Configuration ---
-  const EMAILJS_SERVICE_ID = 'service_3qozdwc';
+        const EMAILJS_SERVICE_ID = 'service_3qozdwc';
         const EMAILJS_TEMPLATE_ID = 'template_q69067c';
         const EMAILJS_PUBLIC_KEY = 'cDxOmMxePGWSWrLPG';
 
@@ -529,19 +523,15 @@
             loadingPhotos: { zh: "載入圖片中...", en: "Loading photos..." },
             shareUnsupported: { zh: "您的瀏覽器不支援直接分享圖片。請嘗試截圖。", en: "Direct image sharing is not supported in your browser. Please try taking a screenshot." },
             shareFailed: { zh: "分享失敗。請稍後再試。", en: "Sharing failed. Please try again later." },
-            shareHtml2CanvasError: { zh: "無法準備分享圖片。請稍後再試。", en: "Could not prepare image for sharing. Please try again later." }
+            shareHtml2CanvasError: { zh: "無法準備分享圖片。請稍後再試。", en: "Could not prepare image for sharing. Please try again later." } // Added specific error text
         };
 
         // --- Game Configuration ---
         const BRIDE_MANIFEST_URL = 'https://raw.githubusercontent.com/AnneSoTw/match-game/refs/heads/main/bride_photo.json';
         const GROOM_MANIFEST_URL = 'https://raw.githubusercontent.com/AnneSoTw/match-game/refs/heads/main/groom_photo.json';
 
-        const picturesPerGame = 10;
-        // Ensure this logoImage is a valid URL or a data URI that html2canvas can access.
-        // If it's a relative path on your server, ensure it's accessible.
-        // For testing, a full external URL or a data URI is often more reliable.
-        const logoImage = document.getElementById('award-logo') ? document.getElementById('award-logo').src : 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIi polarised="45" fill="#a08075"/><text x="50" y="55" font-family="Arial" font-size="30" fill="#ffffff" text-anchor="middle">LOGO</text></svg>';
-
+        const picturesPerGame = 10; // How many pictures to use per game session
+        const logoImage = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIi polarised="45" fill="#a08075"/><text x="50" y="55" font-family="Arial" font-size="30" fill="#ffffff" text-anchor="middle">LOGO?!</text></svg>'; // Logo URL as SVG Data URI
 
         // --- DOM Elements ---
         const welcomeScreen = document.getElementById('welcome-screen');
@@ -560,6 +550,7 @@
         const groomColumn = document.getElementById('groomColumn');
         const brideColumn = document.getElementById('brideColumn');
         const emailStatusEl = document.getElementById('email-status');
+        // Certificate elements
         const awardNicknameZh = document.getElementById('award-nickname-zh');
         const awardNicknameEn = document.getElementById('award-nickname-en');
         const completionDateZh = document.getElementById('completion-date-zh');
@@ -570,9 +561,9 @@
         const awardTimeEn = document.getElementById('award-time-en');
         const shareTextZh = document.getElementById('share-text-zh');
         const shareTextEn = document.getElementById('share-text-en');
-        const awardLogoElementOnPage = document.getElementById('award-logo'); // Reference to the logo img on the results page
-        const instagramShareLink = document.getElementById('instagram-share-link');
-        const awardCertificateElement = document.querySelector('.award-certificate'); 
+        const awardLogo = document.getElementById('award-logo');
+        const instagramShareLink = document.getElementById('instagram-share-link'); // Get the Instagram link element
+        const awardCertificateElement = document.querySelector('.award-certificate'); // Get the certificate element
 
         // --- Game State Variables ---
         let userNickname = '';
@@ -582,15 +573,17 @@
         let startTime;
         let secondsElapsed = 0;
         let currentPictureIndex = 0;
-        let allPictures = [];
-        let gamePictures = [];
+        let allPictures = []; // Now holds ALL pictures fetched from the manifests
+        let gamePictures = []; // Holds the pictures for the current game round
         let isDragging = false;
-        let dragOffsetX, dragOffsetY;
-        // Removed initialElementLeft, initialElementTop as they were not used.
+        let dragOffsetX, dragOffsetY; // Offset from the touch point to the *center* of the element
+        let initialElementLeft, initialElementTop; // Store the initial position of the element
 
         // --- Functions ---
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
+        function showPage(pageId)
+        {
+            document.querySelectorAll('.page').forEach(page =>
+            {
                 page.classList.add('hidden');
                 page.classList.remove('active');
             });
@@ -598,6 +591,7 @@
             if (pageToShow) {
                 pageToShow.classList.remove('hidden');
                 pageToShow.classList.add('active');
+                console.log("Showing page:", pageId);
             } else {
                 console.error("Page not found:", pageId);
             }
@@ -619,40 +613,81 @@
 
         async function fetchPhotoManifests(brideManifestUrl, groomManifestUrl) {
             try {
+                console.log("Fetching photo manifests...");
+                // Show loading indicator while fetching
                 startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingPhotos.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingPhotos.en}</span>`;
-                startError.classList.remove('text-red-600');
-                startError.classList.add('text-gray-600');
+                startError.classList.remove('text-red-600'); // Remove error styling
+                startError.classList.add('text-gray-600'); // Add neutral styling
 
+                // Fetch both manifests in parallel
                 const [brideResponse, groomResponse] = await Promise.all([
                     fetch(brideManifestUrl),
                     fetch(groomManifestUrl)
                 ]);
 
-                if (!brideResponse.ok) throw new Error(`HTTP error fetching bride manifest! status: ${brideResponse.status}`);
-                if (!groomResponse.ok) throw new Error(`HTTP error fetching groom manifest! status: ${groomResponse.status}`);
+                // Check response status explicitly
+                if (!brideResponse.ok) {
+                    console.error(`Failed to fetch bride manifest: HTTP status ${brideResponse.status} ${brideResponse.statusText}`);
+                    throw new Error(`HTTP error fetching bride manifest! status: ${brideResponse.status}`);
+                }
+                 if (!groomResponse.ok) {
+                    console.error(`Failed to fetch groom manifest: HTTP status ${groomResponse.status} ${groomResponse.statusText}`);
+                    throw new Error(`HTTP error fetching groom manifest! status: ${groomResponse.status}`);
+                }
 
-                const brideUrls = await brideResponse.json();
-                const groomUrls = await groomResponse.json();
+                let brideUrls, groomUrls;
 
+                try {
+                    brideUrls = await brideResponse.json(); // Expecting full URLs
+                    console.log("Bride manifest parsed:", brideUrls);
+                } catch (jsonError) {
+                    console.error("Failed to parse bride manifest JSON:", jsonError);
+                    throw new Error("Failed to parse bride manifest JSON.");
+                }
+
+                try {
+                    groomUrls = await groomResponse.json(); // Expecting full URLs
+                    console.log("Groom manifest parsed:", groomUrls);
+                } catch (jsonError) {
+                    console.error("Failed to parse groom manifest JSON:", jsonError);
+                    throw new Error("Failed to parse groom manifest JSON.");
+                }
+
+                // Validate the data structure (should be arrays of strings which are URLs)
                 if (!Array.isArray(brideUrls) || brideUrls.some(item => typeof item !== 'string' || !item.startsWith('http'))) {
-                    throw new Error("Invalid bride manifest format.");
+                     console.error("Invalid bride manifest format. Expected an array of strings (full URLs).");
+                     throw new Error("Invalid bride manifest format. Expected an array of strings (full URLs).");
                 }
-                if (!Array.isArray(groomUrls) || groomUrls.some(item => typeof item !== 'string' || !item.startsWith('http'))) {
-                    throw new Error("Invalid groom manifest format.");
+                 if (!Array.isArray(groomUrls) || groomUrls.some(item => typeof item !== 'string' || !item.startsWith('http'))) {
+                     console.error("Invalid groom manifest format. Expected an array of strings (full URLs).");
+                     throw new Error("Invalid groom manifest format. Expected an array of strings (full URLs).");
                 }
 
-                const bridePictures = brideUrls.map(url => ({ url: url, owner: 'bride' }));
-                const groomPictures = groomUrls.map(url => ({ url: url, owner: 'groom' }));
-                allPictures = [...bridePictures, ...groomPictures];
-                startError.innerHTML = '';
-                startError.classList.remove('text-gray-600');
+                // Combine and format the pictures (URLs are already full)
+                const bridePictures = brideUrls.map(url => ({
+                     url: url,
+                     owner: 'bride'
+                }));
+                 const groomPictures = groomUrls.map(url => ({
+                     url: url,
+                     owner: 'groom'
+                }));
+
+                allPictures = [...bridePictures, ...groomPictures]; // Combine the arrays
+                console.log("Combined pictures:", allPictures);
+
+                startError.innerHTML = ''; // Clear loading message
+                startError.classList.remove('text-gray-600'); // Remove neutral styling
+
             } catch (error) {
                 console.error("Error fetching photo manifests:", error);
-                allPictures = [];
+                allPictures = []; // Clear pictures on error
                 startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.loadingPhotosError.zh}</span><span class="lang-en">${TEXT_CONTENT.loadingPhotosError.en}</span>`;
-                startError.classList.remove('text-gray-600');
-                startError.classList.add('text-red-600');
+                startError.classList.remove('text-gray-600'); // Remove neutral styling
+                startError.classList.add('text-red-600'); // Add error styling
+                // Disable start button if photos couldn't load
                 startGameButton.disabled = true;
+
             }
         }
         
@@ -671,13 +706,14 @@
 
         function updateTimer() {
             secondsElapsed = Math.floor((Date.now() - startTime) / 1000);
-            updateTimerDisplay();
+             updateTimerDisplay();
         }
 
         function updateTimerDisplay() {
-            timerDisplay.innerHTML = `
+             timerDisplay.innerHTML = `
                 <span class="bilingual-label">
-                    <span class="lang-zh">時間:</span><span class="lang-en">Time:</span>
+                    <span class="lang-zh">時間:</span>
+                    <span class="lang-en">Time:</span>
                 </span>
                 <span class="value">${secondsElapsed}s</span>`;
         }
@@ -686,58 +722,91 @@
             const itemsRemaining = gamePictures.length - currentPictureIndex;
             itemsLeftCounter.innerHTML = `
                 <span class="bilingual-label">
-                    <span class="lang-zh">剩餘物品:</span><span class="lang-en">Items Left:</span>
+                    <span class="lang-zh">剩餘物品:</span>
+                    <span class="lang-en">Items Left:</span>
                 </span>
                 <span class="value">${itemsRemaining >= 0 ? itemsRemaining : 0}</span>`;
         }
 
+        // *** Corrected loadNextPicture ***
         function loadNextPicture() {
+            console.log("Attempting to load picture at index:", currentPictureIndex);
+            // Reset styles and attributes FIRST
             currentPictureElement.style.opacity = 1;
             currentPictureElement.style.position = 'relative';
             currentPictureElement.style.left = 'auto';
             currentPictureElement.style.top = 'auto';
             currentPictureElement.style.transform = 'none';
-            currentPictureElement.draggable = false;
+            currentPictureElement.draggable = false; // Ensure not draggable initially
             currentPictureElement.removeAttribute('data-owner');
             currentPictureElement.classList.remove('dragging');
-            currentPictureElement.innerHTML = '';
+            currentPictureElement.innerHTML = ''; // Clear previous content
 
             if (currentPictureIndex < gamePictures.length) {
                 updateItemsLeft();
                 const picture = gamePictures[currentPictureIndex];
-                
+                console.log("Loading picture:", picture.url);
+
+                // Add loading indicator (SVG Data URI)
                 const loadingImg = document.createElement('img');
-                loadingImg.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDUiIGZpbGw9IiNlMGUwZTAiLz48dGV4dCB4PSI1MCIgeT0iNTUuMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMDAwMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg==';
+                loadingImg.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDUiIGZpbGw9IiNlMGUwZTAiLz48dGV4dCB4PSI1MCIgeT0iNTUuMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMDAwMDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nLi4uPC90ZXh0Pjwvc3ZnPg=='; // Placeholder loading image (SVG)
                 loadingImg.alt = 'Loading...';
+                loadingImg.classList.add('loading-indicator'); // Add a class for potential styling
                 currentPictureElement.appendChild(loadingImg);
+                console.log("Added loading indicator.");
+
 
                 const img = document.createElement('img');
+
+                // Define onload and onerror BEFORE setting src
                 img.onload = () => {
+                    console.log(`Image loaded successfully: ${img.src}`);
+                    // Check if this image is still the one we expect (prevents race conditions)
                     if (currentPictureIndex < gamePictures.length && gamePictures[currentPictureIndex].url === img.src) {
-                        currentPictureElement.innerHTML = '';
-                        currentPictureElement.appendChild(img);
+                        currentPictureElement.innerHTML = ''; // Clear loading indicator
+                        currentPictureElement.appendChild(img); // Add the loaded image
                         currentPictureElement.setAttribute('data-owner', picture.owner);
-                        currentPictureElement.draggable = true;
+                        currentPictureElement.draggable = true; // Make draggable now
+                        console.log(`Image ${currentPictureIndex + 1} loaded and displayed: ${picture.url}, Owner: ${picture.owner}`);
+                    } else {
+                         console.log("Stale image loaded, ignoring and clearing loading indicator.");
+                         if (currentPictureElement.querySelector('.loading-indicator')) {
+                            currentPictureElement.innerHTML = '';
+                         }
                     }
                 };
                 img.onerror = () => {
-                    if (currentPictureIndex < gamePictures.length && gamePictures[currentPictureIndex].url === picture.url) {
+                    console.error(`Failed to load image: ${picture.url}`);
+                    // Check if this error corresponds to the current index
+                     if (currentPictureIndex < gamePictures.length && gamePictures[currentPictureIndex].url === picture.url) {
+                        currentPictureElement.innerHTML = 'Error loading image.'; // Show error text
+                         // Use an error placeholder image (SVG Data URI)
                         const errorImg = document.createElement('img');
                         errorImg.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNjYzI4MjgiLz48dGV4dCB4PSI1MCIgeT0iNTUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RXJyb3I8L3RleHQ+PC9zdmc+';
                         errorImg.alt = 'Error';
-                        currentPictureElement.innerHTML = '';
+                        currentPictureElement.innerHTML = ''; // Clear previous content
                         currentPictureElement.appendChild(errorImg);
+
+                        // Skip to the next picture on error
                         currentPictureIndex++;
-                        setTimeout(loadNextPicture, 500);
+                        console.log("Skipping to next picture due to load error.");
+                        setTimeout(loadNextPicture, 500); // Add a small delay before loading the next one
                     }
                 };
+
+                // Set src AFTER defining handlers
                 img.src = picture.url;
                 img.alt = "Item to match";
+                console.log("Set image src:", img.src);
+
+
             } else {
-                updateItemsLeft();
+                console.log("All pictures processed. Ending game.");
+                updateItemsLeft(); // Show 0 items left
                 endGame();
             }
         }
+
 
         function handleDrop(draggedElement, dropTarget, draggedOwner, targetOwner) {
             const pictureImgElement = draggedElement.querySelector('img');
@@ -758,28 +827,40 @@
             if (droppedItemsContainer) {
                 droppedItemsContainer.appendChild(droppedItem);
             } else {
+                console.error("Dropped items container not found!");
                 dropTarget.appendChild(droppedItem);
             }
 
             if (draggedOwner === targetOwner) {
                 score++;
+                console.log(`Correct drop! Owner: ${draggedOwner}. Score: ${score}`);
+            } else {
+                console.log(`Incorrect drop! Dragged: ${draggedOwner}, Target: ${targetOwner}`);
             }
 
+            // Hide the dragged element smoothly before loading next
             draggedElement.style.transition = 'opacity 0.2s ease-out';
             draggedElement.style.opacity = 0;
 
+
             currentPictureIndex++;
+            // Wait for fade out before loading next
             setTimeout(() => {
                 loadNextPicture();
-            }, 200);
+                 // Opacity and transition reset happens in loadNextPicture
+            }, 200); // Delay matches transition duration
         }
+
 
         function endGame() {
             stopTimer();
             const finalScoreText = `${score} / ${gamePictures.length}`;
+            console.log(`Game Over. Final Score: ${finalScoreText}, Time: ${secondsElapsed}s`);
+
             const today = new Date();
             const dateZh = today.toLocaleDateString('zh-TW');
             const dateEn = today.toLocaleDateString('en-US');
+            const awardTimeText = secondsElapsed;
 
             awardNicknameZh.textContent = userNickname;
             awardNicknameEn.textContent = userNickname;
@@ -787,20 +868,24 @@
             completionDateEn.textContent = dateEn;
             awardScoreZh.textContent = finalScoreText;
             awardScoreEn.textContent = finalScoreText;
-            awardTimeZh.textContent = secondsElapsed;
-            awardTimeEn.textContent = secondsElapsed;
+            awardTimeZh.textContent = awardTimeText;
+            awardTimeEn.textContent = awardTimeText;
+
             shareTextZh.textContent = TEXT_CONTENT.shareText.zh;
             shareTextEn.textContent = TEXT_CONTENT.shareText.en;
-            
-            // Ensure the main page logo is set using its ID
-            if (awardLogoElementOnPage) {
-                 awardLogoElementOnPage.src = logoImage; // Use the global logoImage variable
-            }
 
+            awardLogo.src = logoImage;
 
             showPage('results-screen');
             replayButton.classList.remove('hidden');
+
             sendResultsEmail();
+
+             try {
+                localStorage.setItem('matchGamePlayed_' + userEmail.toLowerCase(), 'true');
+             } catch (e) {
+                console.warn("LocalStorage write failed:", e);
+             }
         }
 
         function setEmailStatus(statusKey) {
@@ -812,6 +897,8 @@
              if (emailStatusEl) {
                 emailStatusEl.innerHTML = `<span class="lang-zh">${status.zh}</span><span class="lang-en">${status.en}</span>`;
                 emailStatusEl.className = className;
+             } else {
+                 console.error("Email status element not found!");
              }
          }
 
@@ -819,9 +906,11 @@
             if (!EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' ||
                 !EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID' ||
                 !EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+                console.warn("EmailJS credentials placeholders. Skipping email send.");
                 setEmailStatus('emailNotConfigured');
                 return;
             }
+
             setEmailStatus('emailSending');
             const templateParams = {
                 nickname: userNickname,
@@ -830,8 +919,13 @@
                 time: secondsElapsed,
                 game_type: 'Match Game'
             };
+
             emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-                .then(() => setEmailStatus('emailSuccess'), (error) => {
+                .then((response) => {
+                   console.log('EmailJS SUCCESS!', response.status, response.text);
+                   setEmailStatus('emailSuccess');
+                }, (error) => {
+                   console.error('EmailJS FAILED...', error);
                    let errorKey = 'emailErrorGeneric';
                    if (error && error.status === 400) errorKey = 'emailErrorTemplate';
                    else if (error && error.status !== 0) errorKey = 'emailErrorConfig';
@@ -839,107 +933,115 @@
                 });
         }
 
-        // MODIFIED: shareCertificate function
         async function shareCertificate() {
-            console.log("Attempting to share certificate for story...");
+            console.log("Attempting to share certificate...");
             if (!awardCertificateElement) {
                 console.error("Award certificate element not found.");
-                alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en);
+                alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
                 return;
             }
 
             let tempWrapper = null; 
             try {
-                tempWrapper = document.createElement('div');
-                tempWrapper.classList.add('share-canvas-wrapper'); 
-
+                // Clone the certificate element to avoid modifying the visible DOM
                 const certificateClone = awardCertificateElement.cloneNode(true);
-                
-                // Get the source of the logo currently displayed on the page
-                const currentLogoSrc = awardLogoElementOnPage ? awardLogoElementOnPage.src : logoImage; // Fallback to global logoImage
-                const clonedLogoImg = certificateClone.querySelector('.award-logo');
-                if(clonedLogoImg) {
-                    clonedLogoImg.src = currentLogoSrc; // Set the cloned logo's src
-                }
-
-
+                // Create a temporary wrapper for the desired aspect ratio
+                tempWrapper = document.createElement('div');
+                tempWrapper.classList.add('share-canvas-wrapper'); // Use the CSS class for styling
+             
+                // Find the original logo and save-the-date elements in the clone
+                const clonedLogo = certificateClone.querySelector('.award-logo');
                 const clonedSaveTheDate = certificateClone.querySelector('.save-the-date-text');
+                // Create a new container for the bottom section (logo and save the date)
                 const bottomSection = document.createElement('div');
-                bottomSection.classList.add('bottom-section'); 
+                bottomSection.classList.add('bottom-section'); // Use the CSS class for styling
 
-                if (clonedSaveTheDate && clonedSaveTheDate.parentNode) {
-                    clonedSaveTheDate.parentNode.removeChild(clonedSaveTheDate); 
-                    bottomSection.appendChild(clonedSaveTheDate); 
+               if (clonedSaveTheDate && clonedSaveTheDate.parentNode) {
+                     clonedSaveTheDate.parentNode.removeChild(clonedSaveTheDate); // Remove from original position
+                     bottomSection.appendChild(clonedSaveTheDate); // Add to new container
                 }
-                if (clonedLogoImg && clonedLogoImg.parentNode) {
-                    clonedLogoImg.parentNode.removeChild(clonedLogoImg); 
-                    bottomSection.appendChild(clonedLogoImg); 
-                }
+                 if (clonedLogo && clonedLogo.parentNode) {
+                     clonedLogo.parentNode.removeChild(clonedLogo); // Remove from original position
+                     bottomSection.appendChild(clonedLogo); // Add to new container
+                 }
 
+                // Append the new bottom section container to the cloned certificate
                 certificateClone.appendChild(bottomSection);
+
+                // Append the cloned certificate to the temporary wrapper
                 tempWrapper.appendChild(certificateClone);
+
+                // Append the temporary wrapper to the body (off-screen)
                 document.body.appendChild(tempWrapper);
-                console.log("Temporary share wrapper created and added to DOM (off-screen).");
-
+                
+                // Use html2canvas to capture the certificate element
                 const canvas = await html2canvas(tempWrapper, {
-                    scale: 3, 
-                    logging: true, 
-                    useCORS: true, 
-                    backgroundColor: null 
+                    scale: 3, // Improve resolution on high-DPI screens
+                    logging: true, // Enable logging for debugging html2canvas
+                    useCORS: true // Attempt to use CORS for images if any
                 });
-                console.log("Certificate rendered to canvas using tempWrapper for story.");
+                console.log("Certificate rendered to canvas.");
 
+                // Convert canvas to Blob
                 canvas.toBlob(async (blob) => {
                     if (!blob) {
                         console.error("Failed to create blob from canvas.");
-                        alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en);
+                         alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
                         return;
                     }
 
+                    // Create a File object
                     const file = new File([blob], 'match_game_certificate.png', { type: 'image/png' });
                     console.log("Blob converted to File:", file);
 
+                    // Check if Web Share API Level 2 is supported
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
                         try {
-                            console.log("Web Share API supported. Sharing file...");
+                            console.log("Web Share API supported. Sharing...");
                             await navigator.share({
                                 files: [file],
                                 title: 'Our Matchmaking Game Certificate!',
+                             //   text: `I scored ${score}/${gamePictures.length} on the Matchmaking Game! Can you beat my score?`
                             });
-                            console.log("Certificate shared successfully via Web Share API.");
+                            console.log("Certificate shared successfully.");
                         } catch (shareError) {
                             console.error("Web Share failed:", shareError);
-                            if (shareError.name !== 'AbortError') { 
-                                alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en);
-                            }
+                             // User likely cancelled the share dialog
+                             if (shareError.name !== 'AbortError') {
+                                alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert for other errors
+                             }
                         }
                     } else {
-                        console.warn("Web Share API Level 2 (files) not supported or cannot share files.");
-                        alert(TEXT_CONTENT.shareUnsupported.zh + '\n' + TEXT_CONTENT.shareUnsupported.en);
+                        console.warn("Web Share API Level 2 not supported or cannot share files.");
+                        // Fallback: Alert user or provide download link
+                        alert(TEXT_CONTENT.shareUnsupported.zh + '\n' + TEXT_CONTENT.shareUnsupported.en); // Basic fallback alert
                     }
                 }, 'image/png');
 
-            } catch (error) { 
-                console.error("Error during certificate preparation or html2canvas:", error);
-                alert(TEXT_CONTENT.shareHtml2CanvasError.zh + '\n' + TEXT_CONTENT.shareHtml2CanvasError.en);
+            } catch (html2canvasError) {
+                console.error("Error rendering certificate with html2canvas:", html2canvasError);
+                 alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en); // Basic fallback alert
             } finally {
-                if (tempWrapper && tempWrapper.parentNode) {
+                 // Always remove the temporary wrapper from the DOM
+                 if (tempWrapper && tempWrapper.parentNode) {
                     tempWrapper.parentNode.removeChild(tempWrapper);
-                    console.log("Temporary share wrapper removed from DOM.");
-                }
+                    console.log("Temporary share wrapper removed.");
+                 }
             }
         }
-
-
         // --- Drag and Drop Event Listeners ---
+
+        // Desktop Drag Events
         currentPictureElement.addEventListener('dragstart', (e) => {
             const targetElement = currentPictureElement;
             const dataOwnerValue = targetElement.getAttribute('data-owner');
             if (targetElement.draggable && dataOwnerValue) {
                 e.dataTransfer.setData('text/plain', dataOwnerValue);
                 setTimeout(() => { targetElement.style.opacity = '0.5'; }, 0);
+                console.log("Desktop drag started, owner:", dataOwnerValue);
             } else {
                 e.preventDefault();
+                console.log("Desktop drag prevented.");
             }
         });
 
@@ -947,8 +1049,10 @@
              if (!e.dataTransfer || e.dataTransfer.dropEffect === 'none') {
                  e.target.style.opacity = '1';
              }
+            console.log("Desktop drag ended.");
         });
 
+        // Drop Zone Events (Desktop)
         [groomColumn, brideColumn].forEach(column => {
             column.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -964,64 +1068,101 @@
                 const targetOwner = column.dataset.owner;
                 if (draggedOwner) {
                     handleDrop(currentPictureElement, column, draggedOwner, targetOwner);
+                } else {
+                    console.error("Desktop drop failed: No data transferred.");
                 }
             });
         });
 
+        // Touch Drag Events
         currentPictureElement.addEventListener('touchstart', (e) => {
             const targetElement = currentPictureElement;
             if (targetElement.draggable && targetElement.hasAttribute('data-owner')) {
-                e.preventDefault(); 
+                e.preventDefault();
                 isDragging = true;
                 targetElement.classList.add('dragging');
+
                 const touch = e.touches[0];
                 const rect = targetElement.getBoundingClientRect();
+
+                // Calculate offset from the element's top-left corner to the touch point
+                // This offset is used to maintain the relative position of the touch point on the element
                 dragOffsetX = touch.clientX - rect.left;
                 dragOffsetY = touch.clientY - rect.top;
+
+                // Set initial fixed position based on the touch point and the calculated offset
                 targetElement.style.position = 'fixed';
                 targetElement.style.left = `${touch.clientX - dragOffsetX}px`;
                 targetElement.style.top = `${touch.clientY - dragOffsetY}px`;
+
+
+                console.log("Touch drag started.");
+                console.log(`touchstart: touch.clientX=${touch.clientX}, touch.clientY=${touch.clientY}, rect.left=${rect.left}, rect.top=${rect.top}, dragOffsetX=${dragOffsetX}, dragOffsetY=${dragOffsetY}`);
+            } else {
+                 console.log("Touch drag prevented: Not draggable or no owner.");
             }
         }, { passive: false });
 
         currentPictureElement.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
-            e.preventDefault(); 
+            e.preventDefault();
+
             const touch = e.touches[0];
+            // Position the element's top-left based on the touch point and the initial offset
             const newX = touch.clientX - dragOffsetX;
             const newY = touch.clientY - dragOffsetY;
+
+
             currentPictureElement.style.left = `${newX}px`;
             currentPictureElement.style.top = `${newY}px`;
+
+            console.log(`touchmove: touch.clientX=${touch.clientX}, touch.clientY=${touch.clientY}, newX=${newX}, newY=${newY}`);
+
+
             highlightDropTarget(touch.clientX, touch.clientY);
         }, { passive: false });
 
         currentPictureElement.addEventListener('touchend', (e) => {
             if (!isDragging) return;
+            // No preventDefault needed here usually
+
             isDragging = false;
+            // Remove dragging class FIRST to remove fixed positioning
             currentPictureElement.classList.remove('dragging');
+            // Then reset inline styles that were set during drag
             currentPictureElement.style.left = 'auto';
             currentPictureElement.style.top = 'auto';
-            currentPictureElement.style.opacity = '1'; 
+            currentPictureElement.style.opacity = '1';
+
 
             const touch = e.changedTouches[0];
             const dropTarget = getDropTarget(touch.clientX, touch.clientY);
+
             [groomColumn, brideColumn].forEach(column => column.classList.remove('drag-over'));
 
             if (dropTarget) {
                 const draggedOwner = currentPictureElement.getAttribute('data-owner');
                 const targetOwner = dropTarget.dataset.owner;
+                console.log(`Touch drop detected on ${targetOwner} column.`);
+                // Position is reset by handleDrop -> loadNextPicture
                 handleDrop(currentPictureElement, dropTarget, draggedOwner, targetOwner);
             } else {
-                currentPictureElement.style.position = 'relative';
+                console.log("Touch ended outside target. Resetting position.");
+                // Reset position back to relative within its container
+                 currentPictureElement.style.position = 'relative'; // Ensure it's back to relative
             }
         });
 
         function getDropTarget(x, y) {
             let target = null;
             const originalVisibility = currentPictureElement.style.visibility;
-            if (isDragging) currentPictureElement.style.visibility = 'hidden';
+            if (isDragging) {
+                currentPictureElement.style.visibility = 'hidden';
+            }
             const elementUnderTouch = document.elementFromPoint(x, y);
-            if (isDragging) currentPictureElement.style.visibility = originalVisibility; 
+            if (isDragging) {
+                currentPictureElement.style.visibility = 'visible';
+            }
 
             if (elementUnderTouch) {
                 target = elementUnderTouch.closest('.drop-column');
@@ -1038,75 +1179,125 @@
         }
 
         // --- Initial Setup and Page Transitions ---
+
        async function setupAndStartGame() {
+            console.log("Setting up and starting game...");
             score = 0;
             currentPictureIndex = 0;
             gamePictures = [];
             startTime = null;
             secondsElapsed = 0;
+
             document.querySelectorAll('.dropped-item').forEach(item => item.remove());
-            if(emailStatusEl) emailStatusEl.innerHTML = '';
+            emailStatusEl.innerHTML = '';
             startError.innerHTML = '';
             startGameButton.disabled = false;
            
            if (allPictures.length === 0) {
+                // Call fetchPhotoManifests without base URLs
                 await fetchPhotoManifests(BRIDE_MANIFEST_URL, GROOM_MANIFEST_URL);
-                if (allPictures.length === 0) return; // Stop if photos still couldn't load
+                if (allPictures.length === 0) {
+                     console.error("No pictures available after fetching manifests.");
+                     // Error message is already set by fetchPhotoManifests
+                     return; // Stop game setup if no pictures loaded
+                }
             }
             gamePictures = selectRandomPictures(allPictures, picturesPerGame);
             if (gamePictures.length === 0) {
+                console.error("No pictures selected!");
                 startError.innerHTML = `<span class="lang-zh">錯誤：無法載入圖片。</span><span class="lang-en">Error: Could not load pictures.</span>`;
                 return;
             }
+            console.log(`Selected ${gamePictures.length} pictures.`);
+
             showPage('game-screen');
             replayButton.classList.add('hidden');
+
             updateItemsLeft();
-            loadNextPicture();
+            loadNextPicture(); // Load first picture
             startTimer();
+            console.log("Game setup complete.");
         }
 
         function validateAndInitGame() {
+            console.log("Validating and initializing game...");
             userNickname = nicknameInput.value.trim();
             userEmail = emailInput.value.trim();
             startError.innerHTML = '';
 
             if (!userNickname || !userEmail) {
+                console.log("Validation failed: Name or email empty.");
                 startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorEnterDetails.zh}</span><span class="lang-en">${TEXT_CONTENT.errorEnterDetails.en}</span>`;
                 return;
             }
-            if (!/\S+@\S+\.\S+/.test(userEmail)) { // Basic email validation
+            if (!/\S+@\S+\.\S+/.test(userEmail)) {
+                 console.log("Validation failed: Invalid email format.");
                  startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorInvalidEmail.zh}</span><span class="lang-en">${TEXT_CONTENT.errorInvalidEmail.en}</span>`;
                  return;
             }
+
+      /*      let alreadyPlayed = false;
+            const storageKey = 'matchGamePlayed_' + userEmail.toLowerCase();
+            try {
+                localStorage.getItem(storageKey) === 'true';
+            } catch (e) {
+                 console.warn("LocalStorage check failed:", e);
+            }
+            if (alreadyPlayed) {
+                 console.log("Validation failed: Already played.");
+                 startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorAlreadyPlayed.zh}</span><span class="lang-en">${TEXT_CONTENT.errorAlreadyPlayed.en}</span>`;
+                 return;
+            }*/
+
+            console.log("Validation successful.");
             setupAndStartGame();
         }
 
         function replayGame() {
-             if (userNickname && userEmail) { // Ensure user details are still available
+             console.log("Replay button clicked.");
+             if (userNickname && userEmail) {
+                 const storageKey = 'matchGamePlayed_' + userEmail.toLowerCase();
+                 try {
+                     localStorage.removeItem(storageKey);
+                     console.log("Removed 'already played' flag for replay.");
+                 } catch(e) {
+                     console.warn("Could not remove 'already played' flag:", e);
+                 }
                  setupAndStartGame();
              } else {
-                 showPage('start-screen'); // If not, go back to input details
+                 console.log("User details missing, going back to start screen.");
+                 showPage('start-screen');
              }
         }
+
 
         // --- Event Listeners ---
         continueButton.addEventListener('click', () => showPage('start-screen'));
         startGameButton.addEventListener('click', validateAndInitGame);
         replayButton.addEventListener('click', replayGame);
+        // Add event listener for the Instagram share link
         instagramShareLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            shareCertificate();
+            e.preventDefault(); // Prevent the default link behavior
+            shareCertificate(); // Call the share function
         });
         
         // --- Initial Display ---
         showPage('welcome-screen');
-        fetchPhotoManifests(BRIDE_MANIFEST_URL, GROOM_MANIFEST_URL);
+        fetchPhotoManifests(BRIDE_MANIFEST_URL, GROOM_MANIFEST_URL); // Removed base URLs
         
+        // Initialize EmailJS
         if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
-            try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) { console.error("EmailJS Init failed:", e); }
+            try {
+                 emailjs.init(EMAILJS_PUBLIC_KEY);
+                 console.log("EmailJS Initialized.");
+            } catch(e) {
+                console.error("EmailJS Initialization failed:", e);
+            }
         } else {
-            console.warn("EmailJS Public Key not set. Email sending will be disabled.");
+            console.warn("EmailJS Public Key is not set. Email sending will be disabled.");
         }
+
     </script>
+
 </body>
 </html>
