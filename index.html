@@ -253,7 +253,7 @@
         .email-error { color: #c62828; }
         .email-sending { color: #6d4c41; }
 
-        /* NEW: Style for the temporary share canvas wrapper (9:16 aspect ratio) */
+        /* UPDATED: Style for the temporary share canvas wrapper (9:16 aspect ratio) */
         .share-canvas-wrapper {
             position: absolute;
             left: -9999px; /* Position off-screen */
@@ -262,75 +262,76 @@
             height: 960px; /* Base height for 9:16 aspect ratio */
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: center; /* Center certificate vertically in wrapper */
+            align-items: center; /* Center certificate horizontally in wrapper */
             background-color: #fffaf0; /* Match certificate background */
-            padding: 30px; /* Padding around the certificate content within the wrapper */
+            padding: 20px; /* Reduced padding around the certificate content */
             box-sizing: border-box;
             overflow: hidden; /* Clip content to these dimensions */
         }
-         /* NEW: Styles for the cloned certificate *inside* the share wrapper */
+         /* UPDATED: Styles for the cloned certificate *inside* the share wrapper */
          .share-canvas-wrapper .award-certificate {
-             border: 8px double #c09b2d; /* Keep the border */
-             box-shadow: none; /* Remove shadow for cleaner capture */
-             padding: 1.5rem; /* Adjust padding inside the certificate for story format */
-             width: 100%; /* Make cloned certificate fill the wrapper's padded area */
-             height: 100%; /* Make cloned certificate fill the wrapper's padded area */
+             border: 6px double #c09b2d; /* Slightly thinner border */
+             box-shadow: none;
+             padding: 1rem; /* Reduced padding inside the certificate */
+             width: 100%; 
+             height: 100%; 
              max-width: 100%;
-             margin: 0; /* Remove original margin */
-             display: flex; /* Use flex to arrange content vertically */
+             margin: 0;
+             display: flex;
              flex-direction: column;
              justify-content: space-between; /* Distribute space: title, text, bottom */
              align-items: center;
              text-align: center;
              box-sizing: border-box;
-             background-color: #fffaf0; /* Ensure background is consistent */
+             background-color: #fffaf0; 
          }
-         /* NEW: Adjust font sizes and margins within the cloned certificate for story format */
+         /* UPDATED: Adjust font sizes and margins within the cloned certificate for story format */
          .share-canvas-wrapper .award-title {
-             font-size: 1.8rem; /* Slightly smaller title for story */
-             margin-bottom: 1rem; /* Adjusted margin */
-             line-height: 1.25;
+             font-size: 1.6rem; /* Reduced title font size */
+             margin-bottom: 0.8rem; /* Reduced margin */
+             line-height: 1.2;
          }
          .share-canvas-wrapper .award-text {
-             font-size: 0.9rem; /* Smaller body text */
-             line-height: 1.5;
-             margin-bottom: 1rem; /* Adjusted margin */
+             font-size: 0.8rem; /* Reduced body text font size */
+             line-height: 1.35; /* Reduced line height */
+             margin-bottom: 0.8rem; /* Reduced margin */
+             overflow: hidden; /* Hide text overflow if it's still too much */
+             max-height: 50%; /* Attempt to constrain text block height */
          }
          .share-canvas-wrapper .award-text strong {
-             font-size: 0.95rem; /* Adjust strong text size */
+             font-size: 0.85rem; /* Adjust strong text size */
          }
-         /* NEW: Container for logo and save the date at the bottom of the story image */
+         /* UPDATED: Container for logo and save the date at the bottom of the story image */
          .share-canvas-wrapper .bottom-section {
              display: flex;
              justify-content: space-between;
-             align-items: flex-end; /* Align items to the bottom of their line */
+             align-items: flex-end; 
              width: 100%;
-             margin-top: auto; /* Push this section to the bottom of the flex container */
-             padding: 0 0.5rem; /* Horizontal padding within the bottom section */
+             margin-top: auto; /* Push this section to the bottom */
+             padding: 0 0.25rem; /* Reduced horizontal padding */
              box-sizing: border-box;
+             flex-shrink: 0; /* Prevent this section from shrinking */
          }
 
          .share-canvas-wrapper .award-logo {
-             width: 60px; /* Adjusted logo size for story */
-             height: 60px;
-             margin: 0; /* Remove default margin */
-             order: 2; /* Place logo on the right */
+             width: 50px; /* Reduced logo size */
+             height: 50px;
+             margin: 0; 
+             order: 2; 
              object-fit: contain;
-             /* Optional: Effects for a "stamp" feel */
-             /* opacity: 0.85; */
-             /* filter: grayscale(30%); */
+             flex-shrink: 0; /* Prevent logo from shrinking */
          }
          .share-canvas-wrapper .save-the-date-text {
-             font-size: 0.75rem; /* Adjusted save the date text size */
-             color: #795548; /* Consistent text color */
-             font-weight: normal; /* Less bold for story */
-             line-height: 1.2;
-             margin: 0; /* Remove default margin */
-             text-align: left; /* Align text to the left */
-             order: 1; /* Place text on the left */
-             flex-grow: 1; /* Allow text to take available space */
-             padding-right: 0.5rem; /* Space between text and logo */
+             font-size: 0.7rem; /* Reduced save the date text size */
+             color: #795548; 
+             font-weight: normal; 
+             line-height: 1.15; /* Reduced line height */
+             margin: 0; 
+             text-align: left; 
+             order: 1; 
+             flex-grow: 1; 
+             padding-right: 0.25rem; /* Reduced space */
          }
 
 
@@ -377,7 +378,7 @@
         <div id="welcome-screen" class="page active">
             <h1 class="text-4xl font-bold mb-6 romantic-font">
                 <span class="lang-zh">歡迎來玩配對遊戲！</span>
-                <span class="lang-en">Welcome to the Match Game! A</span>
+                <span class="lang-en">Welcome to the Match Game! B</span>
             </h1>
             <p class="mb-5 text-gray-600" style="line-height: 1.6;">
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 將物品拖曳到屬於新郎或新娘的欄位。<br>3. 完成後查看您的分數和時間。<br>4. 結果將自動發送給我們。</span>
@@ -508,7 +509,7 @@
 
     <script>
         // --- EmailJS Configuration ---
-        const EMAILJS_SERVICE_ID = 'service_3qozdwc';
+  const EMAILJS_SERVICE_ID = 'service_3qozdwc';
         const EMAILJS_TEMPLATE_ID = 'template_q69067c';
         const EMAILJS_PUBLIC_KEY = 'cDxOmMxePGWSWrLPG';
 
@@ -536,7 +537,11 @@
         const GROOM_MANIFEST_URL = 'https://raw.githubusercontent.com/AnneSoTw/match-game/refs/heads/main/groom_photo.json';
 
         const picturesPerGame = 10;
-        const logoImage = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIi polarised="45" fill="#a08075"/><text x="50" y="55" font-family="Arial" font-size="30" fill="#ffffff" text-anchor="middle">LOGO</text></svg>'; // Placeholder logo
+        // Ensure this logoImage is a valid URL or a data URI that html2canvas can access.
+        // If it's a relative path on your server, ensure it's accessible.
+        // For testing, a full external URL or a data URI is often more reliable.
+        const logoImage = document.getElementById('award-logo') ? document.getElementById('award-logo').src : 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIi polarised="45" fill="#a08075"/><text x="50" y="55" font-family="Arial" font-size="30" fill="#ffffff" text-anchor="middle">LOGO</text></svg>';
+
 
         // --- DOM Elements ---
         const welcomeScreen = document.getElementById('welcome-screen');
@@ -565,9 +570,9 @@
         const awardTimeEn = document.getElementById('award-time-en');
         const shareTextZh = document.getElementById('share-text-zh');
         const shareTextEn = document.getElementById('share-text-en');
-        const awardLogo = document.getElementById('award-logo'); // This is the one in the main results screen
+        const awardLogoElementOnPage = document.getElementById('award-logo'); // Reference to the logo img on the results page
         const instagramShareLink = document.getElementById('instagram-share-link');
-        const awardCertificateElement = document.querySelector('.award-certificate'); // The main certificate element
+        const awardCertificateElement = document.querySelector('.award-certificate'); 
 
         // --- Game State Variables ---
         let userNickname = '';
@@ -581,7 +586,7 @@
         let gamePictures = [];
         let isDragging = false;
         let dragOffsetX, dragOffsetY;
-        let initialElementLeft, initialElementTop;
+        // Removed initialElementLeft, initialElementTop as they were not used.
 
         // --- Functions ---
         function showPage(pageId) {
@@ -786,7 +791,12 @@
             awardTimeEn.textContent = secondsElapsed;
             shareTextZh.textContent = TEXT_CONTENT.shareText.zh;
             shareTextEn.textContent = TEXT_CONTENT.shareText.en;
-            awardLogo.src = document.getElementById('award-logo').src; // Use the actual logo source from the visible certificate
+            
+            // Ensure the main page logo is set using its ID
+            if (awardLogoElementOnPage) {
+                 awardLogoElementOnPage.src = logoImage; // Use the global logoImage variable
+            }
+
 
             showPage('results-screen');
             replayButton.classList.remove('hidden');
@@ -838,59 +848,47 @@
                 return;
             }
 
-            let tempWrapper = null; // Declare here to be accessible in finally
+            let tempWrapper = null; 
             try {
-                // 1. Create a temporary wrapper for the desired aspect ratio (9:16)
                 tempWrapper = document.createElement('div');
-                tempWrapper.classList.add('share-canvas-wrapper'); // Apply new CSS for off-screen, styled wrapper
+                tempWrapper.classList.add('share-canvas-wrapper'); 
 
-                // 2. Clone the original certificate element
                 const certificateClone = awardCertificateElement.cloneNode(true);
                 
-                // Ensure the cloned logo also uses the correct src (if it was dynamically set)
-                const originalLogoSrc = document.getElementById('award-logo').src;
+                // Get the source of the logo currently displayed on the page
+                const currentLogoSrc = awardLogoElementOnPage ? awardLogoElementOnPage.src : logoImage; // Fallback to global logoImage
                 const clonedLogoImg = certificateClone.querySelector('.award-logo');
-                if(clonedLogoImg) clonedLogoImg.src = originalLogoSrc;
+                if(clonedLogoImg) {
+                    clonedLogoImg.src = currentLogoSrc; // Set the cloned logo's src
+                }
 
 
-                // 3. Restructure the cloned certificate for better story layout:
-                //    Move logo and save-the-date text into a new 'bottom-section' div
                 const clonedSaveTheDate = certificateClone.querySelector('.save-the-date-text');
-                
                 const bottomSection = document.createElement('div');
-                bottomSection.classList.add('bottom-section'); // Class for styling this new section
+                bottomSection.classList.add('bottom-section'); 
 
-                // Move save-the-date text to the bottom section
                 if (clonedSaveTheDate && clonedSaveTheDate.parentNode) {
-                    clonedSaveTheDate.parentNode.removeChild(clonedSaveTheDate); // Remove from original position in clone
-                    bottomSection.appendChild(clonedSaveTheDate); // Add to new bottom section
+                    clonedSaveTheDate.parentNode.removeChild(clonedSaveTheDate); 
+                    bottomSection.appendChild(clonedSaveTheDate); 
                 }
-                // Move logo to the bottom section
                 if (clonedLogoImg && clonedLogoImg.parentNode) {
-                    clonedLogoImg.parentNode.removeChild(clonedLogoImg); // Remove from original position in clone
-                    bottomSection.appendChild(clonedLogoImg); // Add to new bottom section
+                    clonedLogoImg.parentNode.removeChild(clonedLogoImg); 
+                    bottomSection.appendChild(clonedLogoImg); 
                 }
 
-                // Append the new bottom section to the cloned certificate
                 certificateClone.appendChild(bottomSection);
-
-                // 4. Append the cloned and restructured certificate to the temporary wrapper
                 tempWrapper.appendChild(certificateClone);
-
-                // 5. Append the temporary wrapper to the body (it's off-screen due to CSS)
                 document.body.appendChild(tempWrapper);
                 console.log("Temporary share wrapper created and added to DOM (off-screen).");
 
-                // 6. Use html2canvas to capture the temporary wrapper
                 const canvas = await html2canvas(tempWrapper, {
-                    scale: 3, // Increase scale for better resolution (e.g., 540px * 3 = 1620px wide)
-                    logging: true, // Enable html2canvas logging for debugging
-                    useCORS: true, // Important for external images like the logo
-                    backgroundColor: null // Use the wrapper's background color, not default white
+                    scale: 3, 
+                    logging: true, 
+                    useCORS: true, 
+                    backgroundColor: null 
                 });
                 console.log("Certificate rendered to canvas using tempWrapper for story.");
 
-                // Convert canvas to Blob
                 canvas.toBlob(async (blob) => {
                     if (!blob) {
                         console.error("Failed to create blob from canvas.");
@@ -901,19 +899,17 @@
                     const file = new File([blob], 'match_game_certificate.png', { type: 'image/png' });
                     console.log("Blob converted to File:", file);
 
-                    // Check if Web Share API Level 2 (for files) is supported
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
                         try {
                             console.log("Web Share API supported. Sharing file...");
                             await navigator.share({
                                 files: [file],
                                 title: 'Our Matchmaking Game Certificate!',
-                                // text: `I scored ${score}/${gamePictures.length} on the Matchmaking Game!` // Optional text
                             });
                             console.log("Certificate shared successfully via Web Share API.");
                         } catch (shareError) {
                             console.error("Web Share failed:", shareError);
-                            if (shareError.name !== 'AbortError') { // Don't alert if user simply cancelled the share dialog
+                            if (shareError.name !== 'AbortError') { 
                                 alert(TEXT_CONTENT.shareFailed.zh + '\n' + TEXT_CONTENT.shareFailed.en);
                             }
                         }
@@ -923,11 +919,10 @@
                     }
                 }, 'image/png');
 
-            } catch (error) { // Catch errors from html2canvas or other synchronous parts of the try block
+            } catch (error) { 
                 console.error("Error during certificate preparation or html2canvas:", error);
                 alert(TEXT_CONTENT.shareHtml2CanvasError.zh + '\n' + TEXT_CONTENT.shareHtml2CanvasError.en);
             } finally {
-                // 7. Always remove the temporary wrapper from the DOM after processing
                 if (tempWrapper && tempWrapper.parentNode) {
                     tempWrapper.parentNode.removeChild(tempWrapper);
                     console.log("Temporary share wrapper removed from DOM.");
@@ -976,7 +971,7 @@
         currentPictureElement.addEventListener('touchstart', (e) => {
             const targetElement = currentPictureElement;
             if (targetElement.draggable && targetElement.hasAttribute('data-owner')) {
-                e.preventDefault(); // Prevent scrolling while dragging
+                e.preventDefault(); 
                 isDragging = true;
                 targetElement.classList.add('dragging');
                 const touch = e.touches[0];
@@ -991,7 +986,7 @@
 
         currentPictureElement.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
-            e.preventDefault(); // Prevent scrolling while dragging
+            e.preventDefault(); 
             const touch = e.touches[0];
             const newX = touch.clientX - dragOffsetX;
             const newY = touch.clientY - dragOffsetY;
@@ -1004,10 +999,9 @@
             if (!isDragging) return;
             isDragging = false;
             currentPictureElement.classList.remove('dragging');
-            // Reset inline styles that were set for fixed positioning during drag
             currentPictureElement.style.left = 'auto';
             currentPictureElement.style.top = 'auto';
-            currentPictureElement.style.opacity = '1'; // Ensure opacity is reset
+            currentPictureElement.style.opacity = '1'; 
 
             const touch = e.changedTouches[0];
             const dropTarget = getDropTarget(touch.clientX, touch.clientY);
@@ -1018,18 +1012,16 @@
                 const targetOwner = dropTarget.dataset.owner;
                 handleDrop(currentPictureElement, dropTarget, draggedOwner, targetOwner);
             } else {
-                // If not dropped on a target, reset to its original relative position style
                 currentPictureElement.style.position = 'relative';
             }
         });
 
         function getDropTarget(x, y) {
             let target = null;
-            // Temporarily hide the dragged element to correctly identify element underneath
             const originalVisibility = currentPictureElement.style.visibility;
             if (isDragging) currentPictureElement.style.visibility = 'hidden';
             const elementUnderTouch = document.elementFromPoint(x, y);
-            if (isDragging) currentPictureElement.style.visibility = originalVisibility; // Restore visibility
+            if (isDragging) currentPictureElement.style.visibility = originalVisibility; 
 
             if (elementUnderTouch) {
                 target = elementUnderTouch.closest('.drop-column');
@@ -1059,7 +1051,7 @@
            
            if (allPictures.length === 0) {
                 await fetchPhotoManifests(BRIDE_MANIFEST_URL, GROOM_MANIFEST_URL);
-                if (allPictures.length === 0) return;
+                if (allPictures.length === 0) return; // Stop if photos still couldn't load
             }
             gamePictures = selectRandomPictures(allPictures, picturesPerGame);
             if (gamePictures.length === 0) {
@@ -1082,7 +1074,7 @@
                 startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorEnterDetails.zh}</span><span class="lang-en">${TEXT_CONTENT.errorEnterDetails.en}</span>`;
                 return;
             }
-            if (!/\S+@\S+\.\S+/.test(userEmail)) {
+            if (!/\S+@\S+\.\S+/.test(userEmail)) { // Basic email validation
                  startError.innerHTML = `<span class="lang-zh">${TEXT_CONTENT.errorInvalidEmail.zh}</span><span class="lang-en">${TEXT_CONTENT.errorInvalidEmail.en}</span>`;
                  return;
             }
@@ -1090,10 +1082,10 @@
         }
 
         function replayGame() {
-             if (userNickname && userEmail) {
+             if (userNickname && userEmail) { // Ensure user details are still available
                  setupAndStartGame();
              } else {
-                 showPage('start-screen');
+                 showPage('start-screen'); // If not, go back to input details
              }
         }
 
@@ -1113,7 +1105,7 @@
         if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
             try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) { console.error("EmailJS Init failed:", e); }
         } else {
-            console.warn("EmailJS Public Key not set.");
+            console.warn("EmailJS Public Key not set. Email sending will be disabled.");
         }
     </script>
 </body>
