@@ -507,6 +507,8 @@
         const EMAILJS_TEMPLATE_ID = 'template_q69067c';
         const EMAILJS_PUBLIC_KEY = 'cDxOmMxePGWSWrLPG';
 
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyqWs-xq7xBd0VE1PucUE18qDPpcf5S0SabjdquGt8JSa7_3BEDn0lT3CML37UTk4in0A/exec'
+        
         // --- Bilingual Text Content ---
         const TEXT_CONTENT = {
             emailSending: { zh: "正在發送結果...", en: "Sending results..." },
@@ -902,7 +904,30 @@
              }
          }
 
-        function sendResultsEmail() {
+        function sendResultsEmail() 
+        {
+            // --- Start of Google Sheet Data Preparation ---	
+		    const sheetData =
+		    {
+		        nickname: userNickname,
+                email: userEmail,
+                score: `${score} / ${gamePictures.length}`,
+                time: secondsElapsed
+		    };
+
+	        fetch(APPS_SCRIPT_URL, 
+		    {
+	                method: 'POST',
+	                mode: 'no-cors', 
+	                headers: {
+	                    'Content-Type': 'application/json',
+	                },
+	                body: JSON.stringify(sheetData)
+	        })
+		    .then(res => console.log("Thank you! Your response has been saved."))
+		    .catch(err => console.log("Something went wrong!"));
+		    // --- End of Google Sheet Data Preparation ---
+            
             if (!EMAILJS_SERVICE_ID || EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' ||
                 !EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID' ||
                 !EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
