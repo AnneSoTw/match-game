@@ -354,8 +354,31 @@
                  height: 70px;
              }
         }
-
-    </style>
+	.rules-block {
+	    display: inline-block;   /* keeps the block centered on the page */
+	    text-align: left;        /* but text inside is left-aligned */
+	    line-height: 1.6;
+	    max-width: 480px;        /* adjust to taste */
+	}
+	
+	.rules-title {
+	    margin-bottom: 0.5rem;
+	}
+	
+	.rules-list {
+	    list-style: decimal;
+	    padding-left: 1.5em;     /* wrapped lines indent under the text, not the number */
+	    margin-bottom: 0.75rem;
+	}
+	
+	.rules-list li {
+	    margin-bottom: 0.5rem;
+	}
+	
+	.rules-extra {
+	    margin-top: 0.75rem;
+	}
+</style>
 </head>
 <body>
 
@@ -370,6 +393,33 @@
                 <span class="lang-zh">遊戲規則：<br>1. 輸入您的姓名和電子郵件。<br>2. 將物品拖曳到屬於新郎或新娘的欄位。<br>3. 完成後查看您的分數和時間。<br>4. 結果將自動發送給我們。</span>
                 <span class="lang-en">How to play:<br>1. Enter your name and email.<br>2. Drag items to the Groom's or Bride's column.<br>3. See your score and time at the end.<br>4. Results will be sent automatically.</span>
             </p>
+			<div class="mb-5 text-gray-600 rules-block">
+		        <span class="lang-zh">
+		            <p class="rules-title">遊戲規則：</p>
+		            <ol class="rules-list">
+		                <li>輸入您的姓名與 Email。</li>
+		                <li>將每個物品拖曳到新郎或新娘的欄位，猜猜這是誰的、誰最常使用，或是誰更喜歡它！</li>
+		                <li>完成遊戲後，您可以查看自己的總步數與完成時間。</li>
+		                <li>遊戲結果將會自動送出。</li>
+		                <li>您也可以將成績分享到社群媒體，挑戰其他婚禮賓客，看看誰才是終極新郎新娘專家！</li>
+		            </ol>
+		            <p class="rules-extra"><em>🎁 婚禮當天，排名最高的玩家將獲得特別獎品！</em></p>
+		            <p class="rules-extra"><em>別忘了您使用的姓名，公布得獎者時，我們可能會叫到您的名字！</em></p>
+		        </span>
+				<br>
+		        <span class="lang-en">
+		            <p class="rules-title">How to play:</p>
+		            <ol class="rules-list">
+		                <li>Enter your name and email.</li>
+		                <li>Drag each item into the Groom's or Bride's column and guess who it belongs to, uses it, or loves it more!</li>
+		                <li>When you finish, you'll see your total moves and completion time.</li>
+		                <li>Your results will be submitted automatically.</li>
+		                <li>You can also share your score on social media and challenge other wedding guests to see who is the ultimate Groom & Bride expert!</li>
+		            </ol>
+		            <p class="rules-extra"><em>🎁 On the wedding day, the top player will receive a special prize!</em></p>
+		            <p class="rules-extra"><em>Don't forget the name you used — it might be the one we call when announcing the winner!</em></p>
+		        </span>
+		    </div>
             <button id="continue-button" class="game-button">
                 <span class="lang-zh">繼續</span>
                 <span class="lang-en">Continue</span>
